@@ -5,14 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Average&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
+    <div class="row space-between vertical-center">
+      <div class="column-half">
+        <div class="row">
+          <div class="padding-h-10px column-eigth line-right">
+            <span class="material-icons">list</span>
+          </div>
+          <div class="padding-h-10px column-three-fourths">
+            <h1>MAJAX</h1>
+          </div>
+        </div>
+      </div>
+      <div class="column-half">
+        <div class="row">
+          <div class="padding-h-10px column-eigth">
+            <span class="material-icons">
+            qr_code
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
   <main>
+    <div class="row">
+      <div class="card-list">
+        <div class="row justify-center margin-v-5px">
+          <div class="column-full deck-image-box">
+            <div class="flex container-full justify-center vertical-center">
+              <h1>NULL DECK</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column-full">
+            <input type="search" name="" id="" value="Search">
+            <span class="material-icons search-icon">search</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column-full text-center">
+            <!-- NULL Deck Error-->
+            <div class="null-deck-error" style="display: none;">
+              <h1 style="margin: 1rem;">Oof!</h1>
+              <p>This is not supposed to be visible, if you are here, create a bug fix
+                on <a href="https://github.com/humbertovnavarro/ajax-project/issues">github</a>,
+                or email humberto.navarro.dev@gmail.com
+              </p>
+              <img src="https://http.cat/204">
+            </div>
+            <!-- Deck List Data View-->
+          </div>
+        </div>
+      </div>
+      <div class="desktop">
+        <div class="row">
+          <div class="deck-list-desktop">
+            <div class="row space-between padding-h-10px">
+              <span class="material-icons">west</span>
+              <h1>Decks</h1>
+              <span class="material-icons">east</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card-list-desktop">
+            &nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
