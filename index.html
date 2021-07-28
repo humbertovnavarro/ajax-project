@@ -17,10 +17,8 @@
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 </head>
 <body>
-  <div data-view="search" class="search-modal">
-    <input type="text" id="search-box">
+  <div data-view="search" class="search-modal hidden">
     <div class="carousel">
-      <!-- <img class="MajaxCard query" src="images/test.png" alt="Magic Card" data-index="0"> -->
     </div>
   </div>
   <header>
@@ -52,16 +50,16 @@
         <div class="row justify-center margin-v-5px">
           <div class="column-full deck-image-box">
             <div class="flex container-full justify-center vertical-center">
-              <h1>NULL DECK</h1>
+              <h1>No Deck Selected</h1>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="card-list">
               <div class="row justify-center">
-                <input class="input-fake" type="search" name="" value="Search">
+                <input class="search-box mobile" type="search" name="" value="Search">
+                <span class="material-icons search-icon">search</span>
               </div>
-              <span class="material-icons search-icon">search</span>
           </div>
         </div>
     </div>
@@ -77,7 +75,10 @@
         </div>
         <div class="row">
           <div class="card-list-desktop">
-            &nbsp;
+            <div class="row justify-center">
+                  <input type="text" class="search-box" value="Search">
+                  <span class="material-icons search-icon">search</span>
+            </div>
           </div>
         </div>
       </div>

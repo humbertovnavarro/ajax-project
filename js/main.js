@@ -1,32 +1,46 @@
 /* eslint-disable no-undef */
 var searching = false;
-var $searchBox = document.querySelector('#search-box');
-var $searchBoxFake = document.querySelector('.input-fake');
+var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var flickity;
 var queries = [];
-var $cell;
-var delayedClear;
 var options = {
   imagesLoaded: true,
-  percentPosition: false,
+  percentPosition: true,
   wrapAround: true,
   freeScroll: false,
   pageDots: false
 };
 
-flickity = new Flickity($search, options);
-flickity.on('select', function (cell) {
-  cardStack();
-});
+function getCurrentSearchBox() {
+  if (window.innerWidth > 900) {
+    return $searchBoxes[1];
+  } else {
+    return $searchBoxes[0];
+  }
+}
+
+function resetFlickity() {
+  if (flickity !== undefined) {
+    flickity.destroy();
+  }
+  $search.innerHTML = '';
+  flickity = new Flickity($search, options);
+  flickity.on('staticClick', function (event) {
+    flickity.select(event.target.getAttribute('data-index'));
+  });
+}
 
 window.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     toggleSearch(false);
   }
-  if (event.key.length === 1 && !searching) {
-    toggleSearch(true);
-    $searchBox.focus();
+  if (event.key.length === 1) {
+    if (!searching) {
+      toggleSearch(true);
+    }
+    getCurrentSearchBox().focus();
   }
 });
 
@@ -39,79 +53,50 @@ $searchModal.addEventListener('wheel', function (event) {
   }
 });
 
-$searchBox.addEventListener('focus', function (event) {
-  $searchBox.value = '';
+$searchBoxes[0].addEventListener('focus', function (event) {
+  this.value = '';
 });
 
-$searchBox.addEventListener('keyup', function (event) {
+$searchBoxes[0].addEventListener('blur', function (event) {
+  this.value = 'Search';
+});
+
+$searchBoxes[0].addEventListener('keyup', function (event) {
   if (event.key !== 'Enter') {
     return;
   }
   search();
 });
 
-$searchBoxFake.addEventListener('focus', function (event) {
-  $searchBoxFake.blur();
-  $searchBox.focus();
-  $searchBox.value = $searchBoxFake.value;
-  toggleSearch(true);
+$searchBoxes[1].addEventListener('focus', function (event) {
+  this.value = '';
+});
+
+$searchBoxes[1].addEventListener('blur', function (event) {
+  this.value = 'Search';
+});
+
+$searchBoxes[1].addEventListener('keyup', function (event) {
+  if (event.key !== 'Enter') {
+    return;
+  }
+  search();
 });
 
 $searchModal.addEventListener('mousedown', function (event) {
   if (event.target.matches('.search-modal')) {
     toggleSearch(false);
-    $searchBox.className = 'top';
   }
 });
-
-flickity.on('change', function (cell) {
-  cardStack();
-});
-
-flickity.on('staticClick', function (event) {
-  flickity.select(event.target.getAttribute('data-index'));
-});
-
-function cardStack() {
-  for (var i = 0; i < flickity.cells.length; i++) {
-    flickity.cells[i].element.style.zIndex = -1;
-    flickity.cells[i].element.style.transform = 'none';
-  }
-  var scale = 2;
-  var num = flickity.cells.length / 2 - 3;
-  var currentIndex = flickity.selectedIndex;
-  for (i = 0; i < num; i++) {
-    scale -= 0.1;
-    currentIndex++;
-    if (currentIndex > flickity.cells.length - 1) {
-      currentIndex = 0;
-    }
-    $cell = flickity.cells[currentIndex].element;
-    $cell.style.transform = 'scale(' + scale + ')';
-    $cell.style.zIndex = num - i;
-  }
-  scale = 2;
-  currentIndex = flickity.selectedIndex;
-  for (i = 0; i < num; i++) {
-    scale -= 0.1;
-    currentIndex--;
-    if (currentIndex < 0) {
-      currentIndex = flickity.cells.length - 1;
-    }
-    $cell = flickity.cells[currentIndex].element;
-    $cell.style.transform = 'scale(' + scale + ')';
-    $cell.style.zIndex = num - i;
-  }
-}
 
 function toggleSearch(toggle) {
-  $searchBox.value = '';
+  getCurrentSearchBox().value = '';
   if (toggle) {
     searching = true;
     $searchModal.classList.remove('hidden');
   } else if (!toggle) {
     searching = false;
-    $searchBox.value = '';
+    getCurrentSearchBox().value = '';
     $searchModal.classList.add('hidden');
   }
 }
@@ -123,32 +108,25 @@ function generateCard(card) {
   $img.src = card.image_uris.large;
   return $img;
 }
+
 function search() {
-  /*
-  Flickity Bug turned into feature
-  Flickity is not meant to be cleared instantly, it is supposed to be called using event handlers
-*/
-  delayedClear = setInterval(function () {
-    if (flickity.cells.length <= 0) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + $searchBox.value);
-      xhr.responseType = 'json';
-      xhr.onload = function () {
-        clearInterval(delayedClear);
-        if (xhr.response.data === undefined) {
-          return;
-        }
-        for (var i = Math.min(xhr.response.data.length - 1, 19); i >= 0; i--) {
-          var cell = generateCard(this.response.data[i]);
-          cell.setAttribute('data-index', i);
-          flickity.prepend(cell);
-        }
-        cardStack();
-        $searchBox.value = '';
-      };
-      xhr.send();
-      clearInterval(delayedClear);
+  resetFlickity();
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + getCurrentSearchBox().value);
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    if (xhr.status !== 200) {
+      return;
     }
-    if (delayedClear) { flickity.remove(flickity.selectedElement); }
-  }, 5);
+    if (xhr.response.data.length <= 0) {
+      return;
+    }
+    for (var i = Math.min(xhr.response.data.length - 1, 30); i >= 0; i--) {
+      var cell = generateCard(this.response.data[i]);
+      cell.setAttribute('data-index', i);
+      flickity.prepend(cell);
+    }
+    getCurrentSearchBox().value = '';
+  };
+  xhr.send();
 }
