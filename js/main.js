@@ -30,6 +30,22 @@ function resetFlickity() {
   flickity.on('staticClick', function (event) {
     flickity.select(event.target.getAttribute('data-index'));
   });
+  flickity.on('select', onSelect);
+}
+
+function onSelect(event) {
+  var zoomed = 'scale(2) translateY(-20px)';
+  var normal = 'scale(1) translateY(0px)';
+  for (var i = 0; i < flickity.cells.length; i++) {
+    flickity.cells[i].element.style.transform = normal;
+    flickity.cells[i].element.style.zIndex = ('1');
+  }
+  flickity.selectedElement.style.zIndex = '2';
+  if (flickity.selectedElement.getAttribute('layout') === 'split') {
+    flickity.selectedElement.style.transform = zoomed + ' rotate(90deg)';
+    return;
+  }
+  flickity.selectedElement.style.transform = zoomed;
 }
 
 $searchModal.addEventListener('wheel', function (event) {
@@ -119,6 +135,10 @@ function search() {
     for (var i = Math.min(xhr.response.data.length - 1, 30); i >= 0; i--) {
       var cell = generateCard(this.response.data[i]);
       cell.setAttribute('data-index', i);
+      if (xhr.response.data[i].layout === 'split') {
+        cell.style.transform = 'rotate(90deg)';
+        cell.setAttribute('layout', 'split');
+      }
       flickity.prepend(cell);
     }
   };
