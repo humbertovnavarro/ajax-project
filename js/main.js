@@ -32,18 +32,6 @@ function resetFlickity() {
   });
 }
 
-window.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleSearch(false);
-  }
-  if (event.key.length === 1) {
-    if (!searching) {
-      toggleSearch(true);
-    }
-    getCurrentSearchBox().focus();
-  }
-});
-
 $searchModal.addEventListener('wheel', function (event) {
   if (event.deltaY > 0) {
     flickity.previous();
@@ -63,6 +51,7 @@ $searchBoxes[0].addEventListener('blur', function (event) {
 
 $searchBoxes[0].addEventListener('keyup', function (event) {
   if (event.key !== 'Enter') {
+    toggleSearch(false);
     return;
   }
   search();
@@ -78,6 +67,7 @@ $searchBoxes[1].addEventListener('blur', function (event) {
 
 $searchBoxes[1].addEventListener('keyup', function (event) {
   if (event.key !== 'Enter') {
+    toggleSearch(false);
     return;
   }
   search();
@@ -90,14 +80,11 @@ $searchModal.addEventListener('mousedown', function (event) {
 });
 
 function toggleSearch(toggle) {
-  getCurrentSearchBox().value = '';
   if (toggle) {
-    resetFlickity();
     searching = true;
     $searchModal.classList.remove('hidden');
   } else if (!toggle) {
     searching = false;
-    getCurrentSearchBox().value = '';
     $searchModal.classList.add('hidden');
   }
 }
@@ -111,9 +98,16 @@ function generateCard(card) {
 }
 
 function search() {
+  toggleSearch(true);
   resetFlickity();
+  var $searchBox = getCurrentSearchBox();
+  var query = $searchBox.value;
+  if (!query) {
+    return;
+  }
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + getCurrentSearchBox().value);
+  xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + query);
+  getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   xhr.onload = function () {
     if (xhr.status !== 200) {
@@ -127,7 +121,6 @@ function search() {
       cell.setAttribute('data-index', i);
       flickity.prepend(cell);
     }
-    getCurrentSearchBox().value = '';
   };
   xhr.send();
 }
