@@ -92,6 +92,7 @@ $searchModal.addEventListener('mousedown', function (event) {
 function toggleSearch(toggle) {
   getCurrentSearchBox().value = '';
   if (toggle) {
+    resetFlickity();
     searching = true;
     $searchModal.classList.remove('hidden');
   } else if (!toggle) {
