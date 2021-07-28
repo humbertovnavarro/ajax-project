@@ -77,6 +77,13 @@ header {
   background-color: rgba(0, 0, 0, 0.801);
 }
 
+.carousel {
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 h1 {
   font-weight: normal;
   font-family: 'Philosopher', sans-serif;
@@ -91,9 +98,8 @@ h1 {
   border-right: 1px solid #eeebdd;
 }
 
-.carousel img {
-  margin-left: 1rem;
-  margin-right: 1rem;
+.top {
+  z-index: 1;
 }
 
 /*
@@ -104,9 +110,12 @@ h1 {
   overflow-x: clip !important;
 }
 
+/*
+I need to override in line stylings here
+*/
 .is-selected {
-  z-index: 1;
-  transform: scale(2);
+  transform: scale(2) !important;
+  z-index: 9999 !important;
 }
 
 .MajaxCard {
@@ -136,11 +145,19 @@ input {
   .desktop {
     display: block;
   }
+
+  .mobile {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 900px) {
   .mobile {
     display: block;
+  }
+
+  .MajaxCard {
+    height: 128px;
   }
 
   .desktop {
