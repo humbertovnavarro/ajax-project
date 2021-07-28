@@ -119,11 +119,9 @@ I need to override in line stylings here
 }
 
 .MajaxCard {
-  height: 256px;
-}
-
-.query {
   transition: transform 0.2s;
+  height: 256px;
+  border-radius: 11px;
 }
 
 input {

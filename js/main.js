@@ -4,11 +4,12 @@ var $searchBox = document.querySelector('#search-box');
 var $searchBoxFake = document.querySelector('.input-fake');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var queries = [];
 var $cell;
+var delayedClear;
 var options = {
   imagesLoaded: true,
   percentPosition: false,
-  draggable: false,
   wrapAround: true,
   freeScroll: false,
   pageDots: false
@@ -37,8 +38,16 @@ $searchModal.addEventListener('wheel', function (event) {
     flickity.next();
   }
 });
-$searchBoxFake.addEventListener('input', function (event) {
-  $searchBox.value = $searchBoxFake.value;
+
+$searchBox.addEventListener('focus', function (event) {
+  $searchBox.value = '';
+});
+
+$searchBox.addEventListener('keyup', function (event) {
+  if (event.key !== 'Enter') {
+    return;
+  }
+  search();
 });
 
 $searchBoxFake.addEventListener('focus', function (event) {
@@ -48,7 +57,7 @@ $searchBoxFake.addEventListener('focus', function (event) {
   toggleSearch(true);
 });
 
-$searchModal.addEventListener('click', function (event) {
+$searchModal.addEventListener('mousedown', function (event) {
   if (event.target.matches('.search-modal')) {
     toggleSearch(false);
     $searchBox.className = 'top';
@@ -71,7 +80,7 @@ function cardStack() {
   var scale = 2;
   var num = flickity.cells.length / 2 - 3;
   var currentIndex = flickity.selectedIndex;
-  for (var i = 0; i < num; i++) {
+  for (i = 0; i < num; i++) {
     scale -= 0.1;
     currentIndex++;
     if (currentIndex > flickity.cells.length - 1) {
@@ -96,8 +105,8 @@ function cardStack() {
 }
 
 function toggleSearch(toggle) {
+  $searchBox.value = '';
   if (toggle) {
-    flickity = new Flickity($search, options);
     searching = true;
     $searchModal.classList.remove('hidden');
   } else if (!toggle) {
@@ -105,4 +114,41 @@ function toggleSearch(toggle) {
     $searchBox.value = '';
     $searchModal.classList.add('hidden');
   }
+}
+
+function generateCard(card) {
+  queries.push(card);
+  var $img = document.createElement('img');
+  $img.className = 'MajaxCard';
+  $img.src = card.image_uris.large;
+  return $img;
+}
+function search() {
+  /*
+  Flickity Bug turned into feature
+  Flickity is not meant to be cleared instantly, it is supposed to be called using event handlers
+*/
+  delayedClear = setInterval(function () {
+    if (flickity.cells.length <= 0) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + $searchBox.value);
+      xhr.responseType = 'json';
+      xhr.onload = function () {
+        clearInterval(delayedClear);
+        if (xhr.response.data === undefined) {
+          return;
+        }
+        for (var i = Math.min(xhr.response.data.length - 1, 19); i >= 0; i--) {
+          var cell = generateCard(this.response.data[i]);
+          cell.setAttribute('data-index', i);
+          flickity.prepend(cell);
+        }
+        cardStack();
+        $searchBox.value = '';
+      };
+      xhr.send();
+      clearInterval(delayedClear);
+    }
+    if (delayedClear) { flickity.remove(flickity.selectedElement); }
+  }, 5);
 }
