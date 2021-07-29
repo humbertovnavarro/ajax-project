@@ -26,37 +26,23 @@ $searchModal.addEventListener('wheel', function (event) {
   }
 });
 
-$searchBoxes[0].addEventListener('focus', function (event) {
-  this.value = '';
-});
+for (var i = 0; i < $searchBoxes.length; i++) {
+  $searchBoxes[i].addEventListener('focus', function (event) {
+    this.value = '';
+  });
 
-$searchBoxes[0].addEventListener('blur', function (event) {
-  this.value = 'Search';
-});
+  $searchBoxes[i].addEventListener('blur', function (event) {
+    this.value = 'Search';
+  });
 
-$searchBoxes[0].addEventListener('keyup', function (event) {
-  if (event.key !== 'Enter') {
-    toggleSearch(false);
-    return;
-  }
-  search();
-});
-
-$searchBoxes[1].addEventListener('focus', function (event) {
-  this.value = '';
-});
-
-$searchBoxes[1].addEventListener('blur', function (event) {
-  this.value = 'Search';
-});
-
-$searchBoxes[1].addEventListener('keyup', function (event) {
-  if (event.key !== 'Enter') {
-    toggleSearch(false);
-    return;
-  }
-  search();
-});
+  $searchBoxes[i].addEventListener('keyup', function (event) {
+    if (event.key !== 'Enter') {
+      toggleSearch(false);
+      return;
+    }
+    search();
+  });
+}
 
 $searchModal.addEventListener('mousedown', function (event) {
   if (event.target.matches('.search-modal')) {
