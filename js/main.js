@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-var searching = false;
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
@@ -97,10 +96,8 @@ $searchModal.addEventListener('mousedown', function (event) {
 
 function toggleSearch(toggle) {
   if (toggle) {
-    searching = true;
     $searchModal.classList.remove('hidden');
   } else if (!toggle) {
-    searching = false;
     $searchModal.classList.add('hidden');
   }
 }
@@ -122,17 +119,14 @@ function search() {
     return;
   }
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.scryfall.com/cards/search?order=name?unique=cards&q=' + query);
+  xhr.open('GET', 'https://api.scryfall.com/cards/search?order=cmc&q=' + query);
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   xhr.onload = function () {
-    if (xhr.status !== 200) {
+    if (!xhr.response.data) {
       return;
     }
-    if (xhr.response.data.length <= 0) {
-      return;
-    }
-    for (var i = Math.min(xhr.response.data.length - 1, 30); i >= 0; i--) {
+    for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
       var cell = generateCard(this.response.data[i]);
       cell.setAttribute('data-index', i);
       if (xhr.response.data[i].layout === 'split') {
