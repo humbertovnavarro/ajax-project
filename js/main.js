@@ -13,6 +13,8 @@ var options = {
   pageDots: false
 };
 
+data.decks.push(new Deck('Debugging Deck'));
+
 function getCurrentSearchBox() {
   if (window.innerWidth > 900) {
     return $searchBoxes[1];
@@ -40,6 +42,9 @@ function resetFlickity() {
 
 function onSelect(event) {
   var zoomed = 'scale(2) translateY(-20px)';
+  if (window.innerWidth < 900) {
+    zoomed = 'scale(1.25) translateY(-20px)';
+  }
   var normal = 'scale(1) translateY(0px)';
   for (var i = 0; i < flickity.cells.length; i++) {
     flickity.cells[i].element.style.transform = normal;

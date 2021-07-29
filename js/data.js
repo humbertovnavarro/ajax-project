@@ -35,8 +35,6 @@ class Deck {
   }
 }
 
-data.decks.push(new Deck('Default'));
-
 window.addEventListener('load', function () {
   if (localStorage.getItem('decks')) {
     data.decks = JSON.parse(localStorage.getItem('decks'));
