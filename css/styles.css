@@ -76,6 +76,18 @@ header {
   font-size: large;
 }
 
+.load-modal {
+  z-index: 1;
+  position: absolute;
+  top: 60%;
+  left: 35%;
+}
+
+.load-modal img {
+  transform: scale(2);
+  mix-blend-mode: multiply;
+}
+
 .search-modal {
   z-index: 1;
   position: absolute;
@@ -138,6 +150,11 @@ input {
   .card-list-container {
     width: calc(100% / 3);
     height: 83.5vh;
+  }
+
+  .load-modal {
+    top: 49%;
+    left: 46.7%;
   }
 
   .desktop {

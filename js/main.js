@@ -2,9 +2,9 @@
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var $loadModal = document.querySelector('.load-modal');
 var flickity;
 var lastSearch;
-var queries = [];
 var options = {
   imagesLoaded: true,
   percentPosition: true,
@@ -114,7 +114,6 @@ function toggleSearch(toggle) {
 }
 
 function generateCard(card) {
-  queries.push(card);
   var $img = document.createElement('img');
   $img.className = 'MajaxCard';
   $img.src = card.image_uris.large;
@@ -134,20 +133,24 @@ function search() {
   if (!query) {
     return;
   }
+  $loadModal.classList.remove('hidden');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.scryfall.com/cards/search?order=cmc&q=' + query);
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   xhr.onload = function () {
-    if (!xhr.response.data) {
+    if (xhr.response.data === undefined) {
       return;
     }
     lastSearch = xhr.response;
     for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
-      var cell = generateCard(this.response.data[i]);
-      cell.setAttribute('data-index', i);
-      flickity.prepend(cell);
+      if (xhr.response.data[i].image_uris !== undefined) {
+        var cell = generateCard(this.response.data[i]);
+        cell.setAttribute('data-index', i);
+        flickity.prepend(cell);
+      }
     }
+    $loadModal.classList.add('hidden');
   };
   xhr.send();
 }
@@ -156,15 +159,19 @@ function searchMore() {
   xhr.open('GET', lastSearch.nextPage);
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
+  $loadModal.classList.remove('hidden');
   xhr.onload = function () {
-    if (!xhr.response.data) {
+    if (!xhr.response.data || xhr.response.data === undefined) {
       return;
     }
     for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
-      var cell = generateCard(this.response.data[i]);
-      cell.setAttribute('data-index', i);
-      flickity.prepend(cell);
+      if (xhr.response.data[i].image_uris !== undefined) {
+        var cell = generateCard(this.response.data[i]);
+        cell.setAttribute('data-index', i);
+        flickity.prepend(cell);
+      }
     }
+    $loadModal.classList.add('hidden');
   };
   xhr.send();
 }
