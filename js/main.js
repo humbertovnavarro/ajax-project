@@ -3,8 +3,9 @@ var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
 var $loadModal = document.querySelector('.load-modal');
+var $loadMore = document.querySelector('.load-more');
 var flickity;
-var lastSearch;
+var results;
 var options = {
   imagesLoaded: true,
   percentPosition: true,
@@ -105,6 +106,10 @@ $searchModal.addEventListener('mousedown', function (event) {
   }
 });
 
+$loadMore.addEventListener('click', function () {
+  searchMore();
+});
+
 function toggleSearch(toggle) {
   if (toggle) {
     $searchModal.classList.remove('hidden');
@@ -142,7 +147,7 @@ function search() {
     if (xhr.response.data === undefined) {
       return;
     }
-    lastSearch = xhr.response;
+    results = xhr.response;
     for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
       if (xhr.response.data[i].image_uris !== undefined) {
         var cell = generateCard(this.response.data[i]);
@@ -151,12 +156,18 @@ function search() {
       }
     }
     $loadModal.classList.add('hidden');
+    if (xhr.response.nextPage !== undefined) {
+      $loadMore.classList.remove('hidden');
+    } else {
+      $loadMore.classList.add('hidden');
+    }
   };
   xhr.send();
 }
 
 function searchMore() {
-  xhr.open('GET', lastSearch.nextPage);
+  previousResults = results;
+  xhr.open('GET', search.nextPage);
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   $loadModal.classList.remove('hidden');
@@ -164,6 +175,7 @@ function searchMore() {
     if (!xhr.response.data || xhr.response.data === undefined) {
       return;
     }
+    results = xhr.response;
     for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
       if (xhr.response.data[i].image_uris !== undefined) {
         var cell = generateCard(this.response.data[i]);

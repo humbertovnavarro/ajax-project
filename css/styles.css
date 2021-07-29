@@ -106,6 +106,22 @@ header {
   transform: translateY(-50%);
 }
 
+button {
+  box-shadow: 0 0 20px 1px  rgba(0, 0, 0, 0.301);
+  font-family: 'Average', sans-serif;
+  margin: 1rem;
+  color: white;
+  border-radius: 11px;
+  border: none;
+  width: 100px;
+  height: 25px;
+  background-color: #1b1717;
+}
+
+button:active {
+  background-color: #ce1212;
+}
+
 h1 {
   font-weight: normal;
   font-family: 'Philosopher', sans-serif;
