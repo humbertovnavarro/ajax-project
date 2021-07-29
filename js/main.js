@@ -3,6 +3,7 @@ var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
 var flickity;
+var lastSearch;
 var queries = [];
 var options = {
   imagesLoaded: true,
@@ -27,6 +28,11 @@ function resetFlickity() {
   $search.innerHTML = '';
   flickity = new Flickity($search, options);
   flickity.on('staticClick', function (event) {
+    if (event.target.matches('.is-selected')) {
+      data.decks[data.deckIndex].addCard(event.target.getAttribute('data-id'));
+      toggleSearch(false);
+      return;
+    }
     flickity.select(event.target.getAttribute('data-index'));
   });
   flickity.on('select', onSelect);
@@ -107,6 +113,11 @@ function generateCard(card) {
   var $img = document.createElement('img');
   $img.className = 'MajaxCard';
   $img.src = card.image_uris.large;
+  $img.setAttribute('data-id', card.id);
+  if (card.layout === 'split') {
+    $img.style.transform = 'rotate(90deg)';
+    $img.setAttribute('layout', 'split');
+  }
   return $img;
 }
 
@@ -126,13 +137,27 @@ function search() {
     if (!xhr.response.data) {
       return;
     }
+    lastSearch = xhr.response;
     for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
       var cell = generateCard(this.response.data[i]);
       cell.setAttribute('data-index', i);
-      if (xhr.response.data[i].layout === 'split') {
-        cell.style.transform = 'rotate(90deg)';
-        cell.setAttribute('layout', 'split');
-      }
+      flickity.prepend(cell);
+    }
+  };
+  xhr.send();
+}
+
+function searchMore() {
+  xhr.open('GET', lastSearch.nextPage);
+  getCurrentSearchBox().value = '';
+  xhr.responseType = 'json';
+  xhr.onload = function () {
+    if (!xhr.response.data) {
+      return;
+    }
+    for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
+      var cell = generateCard(this.response.data[i]);
+      cell.setAttribute('data-index', i);
       flickity.prepend(cell);
     }
   };
