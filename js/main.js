@@ -27,14 +27,6 @@ $searchModal.addEventListener('wheel', function (event) {
 });
 
 for (var i = 0; i < $searchBoxes.length; i++) {
-  $searchBoxes[i].addEventListener('focus', function (event) {
-    this.value = '';
-  });
-
-  $searchBoxes[i].addEventListener('blur', function (event) {
-    this.value = 'Search';
-  });
-
   $searchBoxes[i].addEventListener('keyup', function (event) {
     if (event.key !== 'Enter') {
       toggleSearch(false);
