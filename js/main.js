@@ -2,11 +2,11 @@
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var $itemContainer = document.querySelector('.majax-item-container');
 var $loadModal = document.querySelector('.load-modal');
 var $loadMore = document.querySelector('.load-more');
 var flickity;
 var results;
-
 var options = {
   imagesLoaded: true,
   percentPosition: true,
@@ -15,7 +15,7 @@ var options = {
   pageDots: false
 };
 
-data.decks.push(new Deck('Test Deck'));
+data.decks.push(new Deck('YEP DUDE'));
 
 $searchModal.addEventListener('wheel', function (event) {
   if (event.deltaY > 0) {
@@ -81,6 +81,7 @@ function search() {
   xhr.responseType = 'json';
   xhr.onload = function () {
     if (xhr.response.data === undefined) {
+      $loadModal.classList.add('hidden');
       return;
     }
     results = xhr.response;
@@ -140,7 +141,8 @@ function resetFlickity() {
   flickity = new Flickity($search, options);
   flickity.on('staticClick', function (event) {
     if (event.target.matches('.is-selected')) {
-      data.decks[data.deckIndex].addCard(event.target.getAttribute('data-id'));
+      var card = Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
+      card.render($itemContainer);
       toggleSearch(false);
       return;
     }

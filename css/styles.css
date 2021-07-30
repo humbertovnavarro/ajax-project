@@ -9,6 +9,91 @@ header {
   background-color: #ce1212;
 }
 
+.mana-container {
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.mana-symbol {
+  width: 16px;
+  height: 16px;
+}
+
+.majax-item {
+  color: #eeebdd;
+  display: flex;
+  width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  height: 3.25rem;
+  border-radius: 11px;
+  background-color: #810000;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.253);
+}
+
+.majax-item .art-crop {
+  border-radius: 11px;
+  width: 10%;
+}
+
+.majax-item button {
+  background-color: transparent;
+  border: none;
+  width: 3rem;
+  height: 1rem;
+}
+
+.majax-item > div:nth-child(1) {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #eeebdd;
+  margin-right: 5px;
+}
+
+.majax-item > div:nth-child(2) {
+  margin-right: 0.5rem;
+}
+
+.majax-item > div:nth-child(2) img {
+  object-fit: cover;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 black;
+}
+
+.majax-item .material-icons {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  transform: scale(2);
+  color: #eeebdd;
+}
+
+.majax-item-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: column;
+}
+
+.majax-item-container::-webkit-scrollbar {
+  display: none;
+}
+
 .card-list-container {
   width: 100%;
   padding-left: 0.5rem;
@@ -106,7 +191,7 @@ header {
   transform: translateY(-50%);
 }
 
-button {
+.search-modal button {
   box-shadow: 0 0 20px 1px  rgba(0, 0, 0, 0.301);
   font-family: 'Average', sans-serif;
   margin: 1rem;
@@ -116,10 +201,6 @@ button {
   width: 100px;
   height: 25px;
   background-color: #1b1717;
-}
-
-button:active {
-  background-color: #ce1212;
 }
 
 h1 {
