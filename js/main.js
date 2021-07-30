@@ -3,6 +3,7 @@ var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
 var $itemContainer = document.querySelector('.majax-item-container');
+var $stackContainer = document.querySelector('.majax-stack-container');
 var $loadModal = document.querySelector('.load-modal');
 var $loadMore = document.querySelector('.load-more');
 var flickity;
@@ -142,7 +143,7 @@ function resetFlickity() {
   flickity.on('staticClick', function (event) {
     if (event.target.matches('.is-selected')) {
       var card = Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
-      card.render($itemContainer);
+      card.render($itemContainer, $stackContainer);
       toggleSearch(false);
       return;
     }

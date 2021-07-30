@@ -9,6 +9,10 @@ header {
   background-color: #ce1212;
 }
 
+.material-icons {
+  font-size: 40px;
+}
+
 .mana-container {
   margin-left: auto;
   margin-right: 1rem;
@@ -32,6 +36,29 @@ header {
   border-radius: 11px;
   background-color: #810000;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.253);
+}
+
+.majax-stack {
+  transition: transform 1s;
+  margin: 1rem;
+  overflow-y: clip;
+  position: relative;
+  width: 185px;
+  height: 256px;
+  background-color: #810000;
+}
+
+.majax-stack > img {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.493);
+  width: 185px;
+  height: 256px;
+  border-radius: 11px;
+  position: absolute;
+  top: 0;
+}
+
+.majax-stack > img:nth-last-child():hover {
+  transform: scale(5);
 }
 
 .majax-item .art-crop {
@@ -74,10 +101,6 @@ header {
   box-shadow: 0 0 5px 0 black;
 }
 
-.material-icons {
-  font-size: 40px;
-}
-
 .majax-item .material-icons {
   padding: 0;
   margin: 0;
@@ -100,6 +123,23 @@ header {
 }
 
 .majax-item-container::-webkit-scrollbar {
+  display: none;
+}
+
+.majax-stack-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.majax-stack-container::-webkit-scrollbar {
   display: none;
 }
 
@@ -288,4 +328,5 @@ input {
     transform: scale(1.25);
     z-index: 2;
   }
+}
 }

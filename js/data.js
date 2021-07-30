@@ -68,6 +68,21 @@ class Card {
     this.name = $name;
     this.image = $image;
     this.manaContainer = $manaContainer;
+
+    var $cardStackItem = document.createElement('div');
+    $cardStackItem.addEventListener('mouseenter', function () {
+      this.style.transform = 'scale(1.25)';
+    });
+    $cardStackItem.addEventListener('mouseleave', function () {
+      this.style.transform = 'scale(1)';
+    });
+    $cardStackItem.setAttribute('data-id', id);
+    $cardStackItem.className = 'majax-stack';
+    var $stackImage = document.createElement('img');
+    $stackImage.src = 'images/loader.gif';
+    $cardStackItem.appendChild($stackImage);
+    this.desktopElement = $cardStackItem;
+
     this.xhr = new XMLHttpRequest();
     this.xhr.open('GET', 'https://api.scryfall.com/cards/' + id);
     this.xhr.responseType = 'json';
@@ -78,11 +93,15 @@ class Card {
     this.xhr.send();
   }
 
-  render(container) {
-    container.appendChild(this.element);
+  render(itemContainer, stackContainer) {
+    itemContainer.appendChild(this.element);
+    if (stackContainer) {
+      stackContainer.appendChild(this.desktopElement);
+    }
   }
 
   onload() {
+    this.fullCard = this.xhr.response.image_uris.large;
     this.name.textContent = this.xhr.response.name;
     this.image.src = this.xhr.response.image_uris.art_crop;
     var manaSymbols = [];
@@ -100,6 +119,7 @@ class Card {
         this.manaContainer.appendChild($image);
       }
     }
+    this.desktopElement.children[0].src = this.fullCard;
   }
 }
 
@@ -116,6 +136,11 @@ class Deck {
   addCard(id) {
     if (this.cards[id] !== undefined) {
       this.cards[id].count++;
+      var $image = document.createElement('img');
+      $image.src = this.cards[id].fullCard;
+      $image.style.transform = 'translateY(' + (this.cards[id].count - 1) * 5 + 'px)';
+      this.cards[id].desktopElement.appendChild($image);
+      this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 5 + 'px';
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
@@ -124,9 +149,12 @@ class Deck {
   }
 
   removeCard(id) {
+    this.cards[id].desktopElement.children[this.cards[id].count - 1].remove();
     this.cards[id].count--;
+    this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 5 + 'px';
     this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     if (this.cards[id].count <= 0) {
+      this.cards[id].desktopElement.remove();
       this.cards[id].element.remove();
     }
   }
