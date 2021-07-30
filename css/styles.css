@@ -65,10 +65,6 @@ header {
   margin-right: 0.5rem;
 }
 
-.majax-stack > img:nth-last-child():hover {
-  transform: scale(5);
-}
-
 .majax-item > div:nth-child(1) {
   text-align: center;
   display: flex;

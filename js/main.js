@@ -78,6 +78,8 @@ function search() {
   var $searchBox = getCurrentSearchBox();
   var query = $searchBox.value;
   if (!query) {
+    $loadModal.classList.add('hidden');
+    $searchModal.classList.add('hidden');
     return;
   }
   $loadModal.classList.remove('hidden');
@@ -86,8 +88,10 @@ function search() {
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   xhr.onload = function () {
-    if (xhr.response.data === undefined) {
+    if (xhr.response.data === undefined || xhr.response.data.length === 0 || xhr.response.data === null) {
+
       $loadModal.classList.add('hidden');
+      $searchModal.classList.add('hidden');
       return;
     }
     results = xhr.response;

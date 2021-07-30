@@ -122,7 +122,10 @@ class Card {
     for (i = 0; i < this.desktopElement.children.length; i++) {
       this.desktopElement.children[i].src = this.fullCard;
     }
-    this.desktopElement.addEventListener('dblclick', function () {
+    this.desktopElement.addEventListener('dblclick', function (event) {
+      if (event.target.getAttribute('data-control')) {
+        return;
+      }
       $infoModal.classList.remove('hidden');
       $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
     });
@@ -148,9 +151,9 @@ class Deck {
       this.cards[id].count++;
       var $image = document.createElement('img');
       $image.src = this.cards[id].fullCard;
-      $image.style.transform = 'translateY(' + (this.cards[id].count - 1) * 5 + 'px)';
+      $image.style.transform = 'translateY(' + (this.cards[id].count - 1) * 10 + 'px)';
       this.cards[id].desktopElement.appendChild($image);
-      this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 5 + 'px';
+      this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 10 + 'px';
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
@@ -161,7 +164,7 @@ class Deck {
   removeCard(id) {
     this.cards[id].desktopElement.children[this.cards[id].count - 1].remove();
     this.cards[id].count--;
-    this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 5 + 'px';
+    this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 10 + 'px';
     this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     if (this.cards[id].count <= 0) {
       this.cards[id].desktopElement.remove();
@@ -185,9 +188,6 @@ class Deck {
 }
 
 window.addEventListener('load', function () {
-  if (localStorage.getItem('decks')) {
-    data.decks = JSON.parse(localStorage.getItem('decks'));
-  }
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.scryfall.com/symbology');
   xhr.responseType = 'json';
