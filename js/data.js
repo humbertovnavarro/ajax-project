@@ -70,12 +70,6 @@ class Card {
     this.manaContainer = $manaContainer;
 
     var $cardStackItem = document.createElement('div');
-    $cardStackItem.addEventListener('mouseenter', function () {
-      this.style.transform = 'scale(1.25)';
-    });
-    $cardStackItem.addEventListener('mouseleave', function () {
-      this.style.transform = 'scale(1)';
-    });
     $cardStackItem.setAttribute('data-id', id);
     $cardStackItem.className = 'majax-stack';
     var $stackImage = document.createElement('img');
@@ -122,17 +116,23 @@ class Card {
     for (i = 0; i < this.desktopElement.children.length; i++) {
       this.desktopElement.children[i].src = this.fullCard;
     }
-    this.desktopElement.addEventListener('dblclick', function (event) {
-      if (event.target.getAttribute('data-control')) {
+
+    this.desktopElement.addEventListener('click', function (event) {
+      if (event.target.className === 'material-icons') {
         return;
       }
       $infoModal.classList.remove('hidden');
       $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
     });
-    this.element.addEventListener('dblclick', function () {
+
+    this.element.addEventListener('click', function () {
+      if (event.target.className === 'material-icons') {
+        return;
+      }
       $infoModal.classList.remove('hidden');
       $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
     });
+
   }
 }
 
@@ -146,14 +146,18 @@ class Deck {
     data.nextDeckID++;
   }
 
+  getCard(id) {
+    return this.cards[id];
+  }
+
   addCard(id) {
     if (this.cards[id] !== undefined) {
       this.cards[id].count++;
       var $image = document.createElement('img');
       $image.src = this.cards[id].fullCard;
-      $image.style.transform = 'translateY(' + (this.cards[id].count - 1) * 10 + 'px)';
+      $image.style.transform = 'translateX(' + (this.cards[id].count - 1) * 10 + 'px)';
       this.cards[id].desktopElement.appendChild($image);
-      this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 10 + 'px';
+      this.cards[id].desktopElement.style.width = 182 + (this.cards[id].count - 1) * 10 + 'px';
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
@@ -164,7 +168,7 @@ class Deck {
   removeCard(id) {
     this.cards[id].desktopElement.children[this.cards[id].count - 1].remove();
     this.cards[id].count--;
-    this.cards[id].desktopElement.style.height = 256 + (this.cards[id].count - 1) * 10 + 'px';
+    this.cards[id].desktopElement.style.width = 182 + (this.cards[id].count - 1) * 10 + 'px';
     this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     if (this.cards[id].count <= 0) {
       this.cards[id].desktopElement.remove();

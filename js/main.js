@@ -17,6 +17,10 @@ var options = {
   pageDots: false
 };
 
+// document.addEventListener('contextmenu', function (evt) {
+//   evt.preventDefault();
+// }, false);
+
 data.decks.push(new Deck('YEP DUDE'));
 
 $infoModal.addEventListener('click', function () {
@@ -89,7 +93,6 @@ function search() {
   xhr.responseType = 'json';
   xhr.onload = function () {
     if (xhr.response.data === undefined || xhr.response.data.length === 0 || xhr.response.data === null) {
-
       $loadModal.classList.add('hidden');
       $searchModal.classList.add('hidden');
       return;
@@ -153,6 +156,7 @@ function resetFlickity() {
     if (event.target.matches('.is-selected')) {
       var card = Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
       card.render($itemContainer, $stackContainer);
+      window.navigator.vibrate([25, 50, 25]);
       return;
     }
     flickity.select(event.target.getAttribute('data-index'));
