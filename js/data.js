@@ -119,7 +119,17 @@ class Card {
         this.manaContainer.appendChild($image);
       }
     }
-    this.desktopElement.children[0].src = this.fullCard;
+    for (i = 0; i < this.desktopElement.children.length; i++) {
+      this.desktopElement.children[i].src = this.fullCard;
+    }
+    this.desktopElement.addEventListener('dblclick', function () {
+      $infoModal.classList.remove('hidden');
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+    });
+    this.element.addEventListener('dblclick', function () {
+      $infoModal.classList.remove('hidden');
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+    });
   }
 }
 

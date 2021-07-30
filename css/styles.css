@@ -49,7 +49,6 @@ header {
 }
 
 .majax-stack > img {
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.493);
   width: 185px;
   height: 256px;
   border-radius: 11px;
@@ -57,9 +56,38 @@ header {
   top: 0;
 }
 
+.load-modal img {
+  transform: scale(2);
+  mix-blend-mode: multiply;
+}
+
+.majax-item > div:nth-child(2) {
+  margin-right: 0.5rem;
+}
+
 .majax-stack > img:nth-last-child():hover {
   transform: scale(5);
 }
+
+.majax-item > div:nth-child(1) {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #eeebdd;
+  margin-right: 5px;
+}
+
+.majax-item > div:nth-child(2) img {
+  object-fit: cover;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 black;
+}
+
 
 .majax-item .art-crop {
   border-radius: 11px;
@@ -73,34 +101,6 @@ header {
   height: 1rem;
 }
 
-.load-modal img {
-  transform: scale(2);
-  mix-blend-mode: multiply;
-}
-
-.majax-item > div:nth-child(1) {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid #eeebdd;
-  margin-right: 5px;
-}
-
-.majax-item > div:nth-child(2) {
-  margin-right: 0.5rem;
-}
-
-.majax-item > div:nth-child(2) img {
-  object-fit: cover;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: 100%;
-  height: 80%;
-  border-radius: 8px;
-  box-shadow: 0 0 5px 0 black;
-}
-
 .majax-item .material-icons {
   padding: 0;
   margin: 0;
@@ -110,6 +110,7 @@ header {
 }
 
 .majax-item-container {
+  height: 83.5vh;
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-y: scroll;
@@ -127,6 +128,7 @@ header {
 }
 
 .majax-stack-container {
+  height: 79.7vh;
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-y: scroll;
@@ -220,6 +222,19 @@ header {
   height: 100vh;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.801);
+}
+
+.info-modal {
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.801);
+}
+.info-modal img {
+  position: absolute;
+  left: 30%;
 }
 
 .carousel {
