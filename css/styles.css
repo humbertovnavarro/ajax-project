@@ -69,9 +69,14 @@ header {
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   border-right: 1px solid #eeebdd;
   margin-right: 5px;
+}
+
+.info-modal img {
+  position: absolute;
 }
 
 .majax-item > div:nth-child(2) img {
@@ -231,10 +236,6 @@ header {
   height: 100vh;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.801);
-}
-
-.info-modal img {
-  position: absolute;
 }
 
 .carousel {
