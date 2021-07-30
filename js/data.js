@@ -1,13 +1,14 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unreachable-loop */
 /* exported data */
 /* exported Deck */
 /* exported Card */
 var data = {
   symbols: null,
+  deckIDS: [],
   decks: [],
-  nextDeckID: 0,
-  deckID: 0,
   deckIndex: 0,
+  nextDeckID: 1,
   mobileView: 'decks'
 };
 
@@ -21,7 +22,6 @@ class Card {
   }
 
   constructor(id) {
-    this.id = id;
     this.count = 1;
     var $cardListItem = document.createElement('div');
     $cardListItem.addEventListener('click', function (event) {
@@ -57,6 +57,7 @@ class Card {
     var $artCrop = document.createElement('div');
     $artCrop.className = 'art-crop';
     var $image = document.createElement('img');
+    $image.src = 'images/loaderblack.svg';
     $artCrop.appendChild($image);
     $cardListItem.appendChild($artCrop);
     var $name = document.createElement('p');
@@ -73,7 +74,7 @@ class Card {
     $cardStackItem.setAttribute('data-id', id);
     $cardStackItem.className = 'majax-stack';
     var $stackImage = document.createElement('img');
-    $stackImage.src = 'images/loader.gif';
+    $stackImage.src = 'images/loaderblack.svg';
     $cardStackItem.appendChild($stackImage);
     this.desktopElement = $cardStackItem;
 
@@ -137,12 +138,13 @@ class Card {
 }
 
 class Deck {
-  constructor(deckName) {
+  constructor(deckName, urlString = null) {
+    $itemContainer.innerHTML = '';
+    $stackContainer.innerHTML = '';
     this.id = data.nextDeckID;
+    data.deckIDS.push(this.id);
     this.name = deckName;
     this.cards = {};
-    data.decks.push(this);
-    data.deckIndex = data.decks.length - 1;
     data.nextDeckID++;
   }
 
@@ -161,6 +163,7 @@ class Deck {
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
+      this.cards[id].render($itemContainer, $stackContainer);
     }
     return this.cards[id];
   }
@@ -176,17 +179,45 @@ class Deck {
     }
   }
 
-  static getActiveDeck() {
+  serialize() {
+    var string = this.name + ';';
+    for (var key in this.cards) {
+      string += key + ';' + this.cards[key].count + ';';
+    }
+    return string.replace(' ', '%20');
+  }
 
+  static getQR() {
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + window.location.hostname + '/?' + this.getActiveDeck().serialize();
+  }
+
+  static loadFromString(string) {
+    if (string === undefined || string === null) {
+      return;
+    }
+    var temp = string.replace('%20', ' ');
+    var cardData = temp.split(';');
+    cardData.pop();
+    var deck = new Deck();
+    deck.name = cardData[0];
+    for (var i = 1; i < cardData.length - 1; i += 2) {
+      var count = Number.parseInt(cardData[i + 1]);
+      for (var j = 0; j < count; j++) {
+        deck.addCard(cardData[i]);
+      }
+    }
+    return deck;
+  }
+
+  static getActiveDeck() {
     return data.decks[data.deckIndex];
   }
 
-  static setActiveDeck(id) {
+  static setActiveDeck(deck) {
     for (var i = 0; i < data.decks.length; i++) {
-      if (data.decks[i].id === id) {
+      if (data.decks[i].id === deck.id) {
         data.deckIndex = i;
       }
-      return this.getActiveDeck();
     }
   }
 }
@@ -198,5 +229,14 @@ window.addEventListener('load', function () {
   xhr.send();
   xhr.addEventListener('load', function () {
     data.symbols = xhr.response.data;
+    var deck = Deck.loadFromString(JSON.parse(localStorage.getItem('1')));
+    data.decks.push(deck);
   });
+});
+
+window.addEventListener('beforeunload', function () {
+  this.localStorage.setItem('deckids', JSON.stringify(data.deckIDS));
+  for (var i = 0; i < data.decks.length; i++) {
+    this.localStorage.setItem(data.decks[i].id, JSON.stringify(data.decks[i].serialize()));
+  }
 });

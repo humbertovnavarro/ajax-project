@@ -1,7 +1,7 @@
 body {
   color: #eeebdd;
-  font-family: 'Average', sans-serif;
-  font-weight: normal;
+  font-family: 'Average', serif;
+  font-size: large;
   background-color: #1b1717;
 }
 
@@ -39,6 +39,8 @@ header {
 }
 
 .majax-stack {
+  border-radius: 11px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.555);
   margin: 0.25rem;
   overflow-y: clip;
   position: relative;
@@ -54,12 +56,12 @@ header {
 }
 
 .load-modal img {
-  border-radius: 30px;
   transform: scale(2);
   mix-blend-mode: multiply;
 }
 
 .majax-item > div:nth-child(2) {
+  width: 64px;
   margin-right: 0.5rem;
 }
 
@@ -80,6 +82,11 @@ header {
   height: 80%;
   border-radius: 8px;
   box-shadow: 0 0 5px 0 black;
+}
+
+.majax-item p {
+  font-family: 'Average', serif;
+  margin-top: 1rem;
 }
 
 .majax-item .art-crop {
@@ -197,7 +204,7 @@ header {
   color: black;
   position: absolute;
   left: 18px;
-  top: 18px;
+  top: 10px;
   font-size: large;
 }
 
@@ -290,7 +297,8 @@ h1 {
 }
 
 input {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   height: 1.3rem;
   width: 100%;
   border-radius: 8px;

@@ -17,12 +17,6 @@ var options = {
   pageDots: false
 };
 
-// document.addEventListener('contextmenu', function (evt) {
-//   evt.preventDefault();
-// }, false);
-
-data.decks.push(new Deck('YEP DUDE'));
-
 $infoModal.addEventListener('click', function () {
   this.classList.add('hidden');
 });
@@ -154,8 +148,7 @@ function resetFlickity() {
   flickity = new Flickity($search, options);
   flickity.on('staticClick', function (event) {
     if (event.target.matches('.is-selected')) {
-      var card = Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
-      card.render($itemContainer, $stackContainer);
+      Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
       window.navigator.vibrate([25, 50, 25]);
       return;
     }
