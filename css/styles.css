@@ -46,6 +46,11 @@ header {
   height: 1rem;
 }
 
+.load-modal img {
+  transform: scale(2);
+  mix-blend-mode: multiply;
+}
+
 .majax-item > div:nth-child(1) {
   text-align: center;
   display: flex;
@@ -67,6 +72,10 @@ header {
   height: 80%;
   border-radius: 8px;
   box-shadow: 0 0 5px 0 black;
+}
+
+.material-icons {
+  font-size: 40px;
 }
 
 .majax-item .material-icons {
@@ -143,10 +152,6 @@ header {
   height: 6rem;
 }
 
-.material-icons {
-  font-size: 40px;
-}
-
 .search-box-container {
   z-index: 2;
   width: 100%;
@@ -166,11 +171,6 @@ header {
   position: absolute;
   top: 60%;
   left: 35%;
-}
-
-.load-modal img {
-  transform: scale(2);
-  mix-blend-mode: multiply;
 }
 
 .search-modal {
