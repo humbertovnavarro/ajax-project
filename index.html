@@ -17,6 +17,25 @@
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 </head>
 <body>
+  <div class="tab-view">
+    <div class="tab-container">
+      <div class="row flex-end padding-h-10px">
+        <span class="material-icons">list</span>
+      </div>
+      <div class="tab-content">
+        <h1>Decks</h1>
+        <span class="material-icons">layers</span>
+      </div>
+      <div class="tab-content">
+        <h1>Help</h1>
+        <span class="material-icons">layers</span>
+      </div>
+      <div class="tab-content">
+        <h1>Buy</h1>
+        <span class="material-icons">layers</span>
+      </div>
+    </div>
+  </div>
   <div class="search-modal hidden">
     <div class="load-modal">
       <img src="images/loader.svg">
@@ -35,7 +54,7 @@
       <div class="column-half">
         <div class="row">
           <div class="padding-h-10px column-eigth line-right">
-            <span class="material-icons">list</span>
+            <span id="tab-view" class="material-icons">list</span>
           </div>
           <div class="padding-h-10px column-three-fourths">
             <h1>MAJAX</h1>

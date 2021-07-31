@@ -88,11 +88,9 @@ class Card {
     this.xhr.send();
   }
 
-  render(itemContainer, stackContainer) {
-    itemContainer.appendChild(this.element);
-    if (stackContainer) {
-      stackContainer.appendChild(this.desktopElement);
-    }
+  render() {
+    $itemContainer.appendChild(this.element);
+    $stackContainer.appendChild(this.desktopElement);
   }
 
   onload() {
@@ -139,13 +137,20 @@ class Card {
 
 class Deck {
   constructor(deckName, urlString = null) {
-    $itemContainer.innerHTML = '';
-    $stackContainer.innerHTML = '';
     this.id = data.nextDeckID;
     data.deckIDS.push(this.id);
+    data.decks.push(this);
     this.name = deckName;
     this.cards = {};
     data.nextDeckID++;
+  }
+
+  render() {
+    $itemContainer.innerHTML = '';
+    $stackContainer.innerHTML = '';
+    for (var i = 0; i < this.cards.length; i++) {
+      this.cards[i].render();
+    }
   }
 
   getCard(id) {
@@ -163,7 +168,9 @@ class Deck {
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
-      this.cards[id].render($itemContainer, $stackContainer);
+      if (this === Deck.getActiveDeck()) {
+        this.cards[id].render();
+      }
     }
     return this.cards[id];
   }
@@ -227,10 +234,9 @@ window.addEventListener('load', function () {
   xhr.open('GET', 'https://api.scryfall.com/symbology');
   xhr.responseType = 'json';
   xhr.send();
+  data.decks.push(new Deck('Default Deck'));
   xhr.addEventListener('load', function () {
     data.symbols = xhr.response.data;
-    var deck = Deck.loadFromString(JSON.parse(localStorage.getItem('1')));
-    data.decks.push(deck);
   });
 });
 

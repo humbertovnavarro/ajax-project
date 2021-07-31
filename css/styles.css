@@ -13,6 +13,33 @@ header {
   font-size: 40px;
 }
 
+.tab-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-content {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.tab-view {
+  z-index: 3;
+  position: absolute;
+  transform: translateX(-15rem);
+  transition: transform 0.25s;
+  background-color: #1b1717f1;
+  backdrop-filter: blur(2px);
+  width: 15rem;
+  height: 100vh;
+}
+
+.slide {
+  transform: unset;
+}
+
 .mana-container {
   margin-left: auto;
   margin-right: 1rem;
@@ -367,4 +394,5 @@ input {
     top: 25%;
     width: 70%;
   }
+}
 }

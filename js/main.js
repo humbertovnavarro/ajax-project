@@ -1,4 +1,7 @@
 /* eslint-disable no-undef */
+var $tabButton = document.querySelector('#tab-view');
+var tabViewOpen = false;
+var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
@@ -16,6 +19,19 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
+
+window.addEventListener('click', function (event) {
+  if (!tabViewOpen || event.target.matches('.tab-view')) {
+    return;
+  }
+  $tabView.classList.remove('slide');
+  tabViewOpen = false;
+});
+
+$tabButton.addEventListener('click', function () {
+  setTimeout(function () { tabViewOpen = true; });
+  $tabView.classList.add('slide');
+});
 
 $infoModal.addEventListener('click', function () {
   this.classList.add('hidden');
