@@ -1,12 +1,153 @@
 body {
   color: #eeebdd;
-  font-family: 'Average', sans-serif;
-  font-weight: normal;
+  font-family: 'Average', serif;
+  font-size: large;
   background-color: #1b1717;
 }
 
 header {
   background-color: #ce1212;
+}
+
+.material-icons {
+  font-size: 40px;
+}
+
+.mana-container {
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.mana-symbol {
+  width: 16px;
+  height: 16px;
+}
+
+.majax-item {
+  color: #eeebdd;
+  display: flex;
+  width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  height: 3.25rem;
+  border-radius: 11px;
+  background-color: #810000;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.253);
+}
+
+.majax-stack {
+  border-radius: 11px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.555);
+  margin: 0.25rem;
+  overflow-y: clip;
+  position: relative;
+  width: 185px;
+  height: 256px;
+}
+
+.majax-stack > img {
+  width: 185px;
+  height: 256px;
+  border-radius: 11px;
+  position: absolute;
+}
+
+.load-modal img {
+  transform: scale(2);
+  mix-blend-mode: multiply;
+}
+
+.majax-item > div:nth-child(2) {
+  width: 64px;
+  margin-right: 0.5rem;
+}
+
+.majax-item > div:nth-child(1) {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #eeebdd;
+  margin-right: 5px;
+}
+
+.info-modal img {
+  position: absolute;
+}
+
+.majax-item > div:nth-child(2) img {
+  object-fit: cover;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 black;
+}
+
+.majax-item p {
+  font-family: 'Average', serif;
+  margin-top: 1rem;
+}
+
+.majax-item .art-crop {
+  border-radius: 11px;
+  width: 10%;
+}
+
+.majax-item button {
+  background-color: transparent;
+  border: none;
+  width: 3rem;
+  height: 1rem;
+}
+
+.majax-item .material-icons {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  transform: scale(2);
+  color: #eeebdd;
+}
+
+.majax-item-container {
+  height: 83.5vh;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: column;
+}
+
+.majax-item-container::-webkit-scrollbar {
+  display: none;
+}
+
+.majax-stack-container {
+  height: 79.7vh;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+}
+
+.majax-stack-container::-webkit-scrollbar {
+  display: none;
 }
 
 .card-list-container {
@@ -58,10 +199,6 @@ header {
   height: 6rem;
 }
 
-.material-icons {
-  font-size: 40px;
-}
-
 .search-box-container {
   z-index: 2;
   width: 100%;
@@ -72,7 +209,7 @@ header {
   color: black;
   position: absolute;
   left: 18px;
-  top: 18px;
+  top: 10px;
   font-size: large;
 }
 
@@ -83,13 +220,17 @@ header {
   left: 35%;
 }
 
-.load-modal img {
-  transform: scale(2);
-  mix-blend-mode: multiply;
-}
-
 .search-modal {
   z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.801);
+}
+
+.info-modal {
+  z-index: 3;
   position: absolute;
   width: 100%;
   height: 100vh;
@@ -106,7 +247,7 @@ header {
   transform: translateY(-50%);
 }
 
-button {
+/* .search-modal button {
   box-shadow: 0 0 20px 1px  rgba(0, 0, 0, 0.301);
   font-family: 'Average', sans-serif;
   margin: 1rem;
@@ -116,11 +257,7 @@ button {
   width: 100px;
   height: 25px;
   background-color: #1b1717;
-}
-
-button:active {
-  background-color: #ce1212;
-}
+} */
 
 h1 {
   font-weight: normal;
@@ -152,8 +289,17 @@ h1 {
   border-radius: 11px;
 }
 
+.MajaxCard:active {
+  border: 1px solid white;
+}
+
+.majax-stack:hover {
+  border: 1px solid #eeebdd;
+}
+
 input {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   height: 1.3rem;
   width: 100%;
   border-radius: 8px;
@@ -184,6 +330,13 @@ input {
     width: calc(100% / 3);
   }
 
+  .info-modal img {
+    border-radius: 30px;
+    left: 40%;
+    top: 15%;
+    width: 25%;
+  }
+
   .mobile {
     display: none;
   }
@@ -206,5 +359,12 @@ input {
   .is-selected {
     transform: scale(1.25);
     z-index: 2;
+  }
+
+  .info-modal img {
+    border-radius: 15px;
+    left: 15%;
+    top: 25%;
+    width: 70%;
   }
 }

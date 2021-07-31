@@ -2,11 +2,13 @@
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var $itemContainer = document.querySelector('.majax-item-container');
+var $stackContainer = document.querySelector('.majax-stack-container');
+var $infoModal = document.querySelector('.info-modal');
 var $loadModal = document.querySelector('.load-modal');
 var $loadMore = document.querySelector('.load-more');
 var flickity;
 var results;
-
 var options = {
   imagesLoaded: true,
   percentPosition: true,
@@ -15,7 +17,9 @@ var options = {
   pageDots: false
 };
 
-data.decks.push(new Deck('Test Deck'));
+$infoModal.addEventListener('click', function () {
+  this.classList.add('hidden');
+});
 
 $searchModal.addEventListener('wheel', function (event) {
   if (event.deltaY > 0) {
@@ -72,6 +76,8 @@ function search() {
   var $searchBox = getCurrentSearchBox();
   var query = $searchBox.value;
   if (!query) {
+    $loadModal.classList.add('hidden');
+    $searchModal.classList.add('hidden');
     return;
   }
   $loadModal.classList.remove('hidden');
@@ -80,7 +86,9 @@ function search() {
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
   xhr.onload = function () {
-    if (xhr.response.data === undefined) {
+    if (xhr.response.data === undefined || xhr.response.data.length === 0 || xhr.response.data === null) {
+      $loadModal.classList.add('hidden');
+      $searchModal.classList.add('hidden');
       return;
     }
     results = xhr.response;
@@ -140,8 +148,8 @@ function resetFlickity() {
   flickity = new Flickity($search, options);
   flickity.on('staticClick', function (event) {
     if (event.target.matches('.is-selected')) {
-      data.decks[data.deckIndex].addCard(event.target.getAttribute('data-id'));
-      toggleSearch(false);
+      Deck.getActiveDeck().addCard(event.target.getAttribute('data-id'));
+      window.navigator.vibrate([25, 50, 25]);
       return;
     }
     flickity.select(event.target.getAttribute('data-index'));
