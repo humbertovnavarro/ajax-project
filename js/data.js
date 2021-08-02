@@ -138,6 +138,7 @@ class Card {
         if (this.xhr.response.image_uris.art_crop != null) {
           if (Deck.getActiveDeck().image === 'images/loader.svg') {
             Deck.getActiveDeck().image = this.xhr.response.image_uris.art_crop;
+            $deckImageBox.style.backgroundImage = 'url(' + Deck.getActiveDeck().image + ')';
           }
         }
       }

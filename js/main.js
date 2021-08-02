@@ -6,6 +6,7 @@ var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var $deckCarousel = document.querySelector('.deck-container');
 var $deckBigText = document.querySelector('.deck-big-text');
 var $deckImageBox = document.querySelector('.deck-image-box');
 // eslint-disable-next-line no-unused-vars
@@ -25,7 +26,7 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
-
+var deckity = new Flickity($deckCarousel, options);
 $tabView.addEventListener('click', function (event) {
   if (event.target.parentElement.getAttribute('data-link') !== null) {
     switchView(event.target.parentElement.getAttribute('data-link'));
@@ -61,7 +62,9 @@ window.addEventListener('load', function () {
     data.symbols = xhr.response.data;
   });
   for (i = 0; i < data.decks.length; i++) {
-    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
+    setTimeout(function () {
+      deckity.prepend(data.decks[i].renderDeckBox());
+    });
   }
 });
 
