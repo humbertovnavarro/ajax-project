@@ -103,11 +103,26 @@ header {
   margin-right: 5px;
 }
 
+.deck-image-box {
+  backdrop-filter: brightness(20%);
+}
+
 .info-modal img {
   position: absolute;
 }
 
-.majax-item > div:nth-child(2) img {
+.art-crop {
+  width: 64px;
+}
+
+.deck-container .art-crop {
+  padding-top: 5px;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 3rem;
+}
+
+.art-crop img {
   object-fit: cover;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -210,6 +225,25 @@ header {
   height: 6rem;
   border-radius: 11px;
   background-color: #ce1212;
+}
+
+.deck-container {
+  display: flex;
+  justify-content: center;
+}
+
+.deck {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  align-items: center;
+  display: flex;
+  max-width: 20rem;
+  overflow-x: clip;
+  padding-right: 1rem;
+  height: 3rem;
+  background-color: #000;
+  color: #eeebdd;
+  border-radius: 6px;
 }
 
 .text-center {
@@ -360,7 +394,7 @@ input {
 
 @media only screen and (max-width: 900px) {
   .mobile {
-    display: unset;
+    display: inherit;
   }
 
   .desktop {
@@ -383,5 +417,13 @@ input {
     top: 25%;
     width: 70%;
   }
-}
+
+  .deck {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .deck .art-crop {
+    margin-right: 0.5rem;
+  }
 }

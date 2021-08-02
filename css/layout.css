@@ -16,7 +16,7 @@
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .justify-center {

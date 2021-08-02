@@ -22,7 +22,7 @@
       <div class="row flex-end padding-h-10px">
         <span class="material-icons">list</span>
       </div>
-      <div class="tab-content">
+      <div class="tab-content mobile" data-link="decks">
         <h1>Decks</h1>
         <span class="material-icons">layers</span>
       </div>
@@ -78,7 +78,7 @@
         <div class="row justify-center margin-v-5px">
           <div class="column-full deck-image-box">
             <div class="flex container-full justify-center vertical-center">
-              <h1>No Deck Selected</h1>
+              <h1 class="deck-big-text">No Deck Selected</h1>
             </div>
           </div>
         </div>
@@ -91,7 +91,10 @@
                 </div>
               </div>
               <div class="row justify-center">
-                  <div class="majax-item-container">
+                  <div class="majax-item-container card-view">
+                  </div>
+                  <div class="majax-item-container deck-view mobile hidden">
+                    <p>hello</p>
                   </div>
               </div>
           </div>
@@ -101,9 +104,11 @@
         <div class="row">
           <div class="deck-list-desktop">
             <div class="row space-between padding-h-10px">
-              <span class="material-icons">west</span>
+              <span data-control="left" class="material-icons">west</span>
               <h1>Decks</h1>
-              <span class="material-icons">east</span>
+              <span data-control="right" class="material-icons">east</span>
+            </div>
+            <div class="deck-container">
             </div>
           </div>
         </div>

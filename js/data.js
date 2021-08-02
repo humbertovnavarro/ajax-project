@@ -113,6 +113,7 @@ class Card {
         this.manaContainer.appendChild($image);
       }
     }
+    this.symbols = manaSymbols;
     for (i = 0; i < this.desktopElement.children.length; i++) {
       this.desktopElement.children[i].src = this.fullCard;
     }
@@ -132,7 +133,15 @@ class Card {
       $infoModal.classList.remove('hidden');
       $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
     });
-
+    if (this.xhr.response != null) {
+      if (this.xhr.response.image_uris != null) {
+        if (this.xhr.response.image_uris.art_crop != null) {
+          if (Deck.getActiveDeck().image === 'images/loader.svg') {
+            Deck.getActiveDeck().image = this.xhr.response.image_uris.art_crop;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -140,6 +149,7 @@ class Deck {
   constructor(deckName, urlString = null) {
     this.id = data.nextDeckID;
     this.name = deckName;
+    this.image = 'images/loader.svg';
     this.cards = {};
     data.nextDeckID++;
   }
@@ -150,6 +160,8 @@ class Deck {
     for (var key in this.cards) {
       this.cards[key].render();
     }
+    $deckBigText.textContent = this.name;
+    $deckImageBox.style.backgroundImage = 'url(' + this.image + ')';
   }
 
   getCard(id) {
@@ -194,6 +206,30 @@ class Deck {
     return string.replace(' ', '%20');
   }
 
+  renderDeckBox() {
+    var $deckBox = document.createElement('div');
+    $deckBox.setAttribute('data-id', this.id);
+    $deckBox.className = 'deck';
+    var $artCrop = document.createElement('div');
+    $artCrop.className = 'art-crop';
+    var $image = document.createElement('img');
+    $image.src = this.image;
+    $artCrop.appendChild($image);
+    $deckBox.appendChild($artCrop);
+    var $title = document.createElement('h2');
+    $deckBox.appendChild($title);
+    $title.textContent = this.name;
+    $deckBox.addEventListener('click', function (event) {
+      switchView('cards');
+      if (data.activeDeck === this.id) {
+        return;
+      }
+      Deck.setActiveDeck(Number.parseInt(this.getAttribute('data-id')));
+      this.classList.add('active');
+    });
+    return $deckBox;
+  }
+
   static getQR() {
     return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + window.location.hostname + '/?' + this.getActiveDeck().serialize();
   }
@@ -220,6 +256,11 @@ class Deck {
     return data.decks[data.deckIndex];
   }
 
+  static import(string) {
+    var deck = Deck.loadFromString(string);
+    Deck.stashDeck(deck);
+  }
+
   static stashDeck(deck) {
     deck.id = data.nextDeckID;
     data.decks.push(deck);
@@ -239,39 +280,12 @@ class Deck {
   }
 }
 
-window.addEventListener('load', function () {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.scryfall.com/symbology');
-  xhr.responseType = 'json';
-  xhr.send();
-  var idsJSON = this.localStorage.getItem('deckids');
-  var ids = JSON.parse(idsJSON);
-  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
-  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
-  if (ids !== null) {
-    for (var i = 0; i < ids.length; i++) {
-      var deckJSON = this.localStorage.getItem(ids[i]);
-      var deckString = JSON.parse(deckJSON);
-      var deck = Deck.loadFromString(deckString);
-      deck.id = ids[i];
-      data.decks.push(deck);
-    }
-    data.deckIDS = ids;
-  }
-  if (data.decks.length === 0) {
-    Deck.stashDeck(new Deck('default'));
-  }
-  Deck.setActiveDeck(data.activeDeck);
-  xhr.addEventListener('load', function () {
-    data.symbols = xhr.response.data;
-  });
-});
-
 window.addEventListener('beforeunload', function () {
   this.localStorage.setItem('activedeck', data.activeDeck);
   this.localStorage.setItem('nextdeckid', data.nextDeckID);
   this.localStorage.setItem('deckids', JSON.stringify(data.deckIDS));
   for (var i = 0; i < data.decks.length; i++) {
+    this.localStorage.setItem(data.decks[i].id + '_image', JSON.stringify(data.decks[i].image));
     this.localStorage.setItem(data.decks[i].id, JSON.stringify(data.decks[i].serialize()));
   }
 });

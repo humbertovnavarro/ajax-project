@@ -1,12 +1,16 @@
 /* eslint-disable no-undef */
 var $tabButton = document.querySelector('#tab-view');
 var tabViewOpen = false;
+var $deckContainerDesktop = document.querySelector('.deck-container');
 var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+var $deckBigText = document.querySelector('.deck-big-text');
+var $deckImageBox = document.querySelector('.deck-image-box');
 // eslint-disable-next-line no-unused-vars
-var $itemContainer = document.querySelector('.majax-item-container');
+var $itemContainer = document.querySelector('.card-view');
+var $deckView = document.querySelector('.deck-view');
 // eslint-disable-next-line no-unused-vars
 var $stackContainer = document.querySelector('.majax-stack-container');
 var $infoModal = document.querySelector('.info-modal');
@@ -21,6 +25,45 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
+
+$tabView.addEventListener('click', function (event) {
+  if (event.target.parentElement.getAttribute('data-link') !== null) {
+    switchView(event.target.parentElement.getAttribute('data-link'));
+  }
+});
+
+window.addEventListener('load', function () {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://api.scryfall.com/symbology');
+  xhr.responseType = 'json';
+  xhr.send();
+  var idsJSON = this.localStorage.getItem('deckids');
+  var ids = JSON.parse(idsJSON);
+  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
+  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
+  if (ids !== null) {
+    for (var i = 0; i < ids.length; i++) {
+      var deckJSON = this.localStorage.getItem(ids[i]);
+      var imageSRC = localStorage.getItem(ids[i] + '_image');
+      var deckString = JSON.parse(deckJSON);
+      var deck = Deck.loadFromString(deckString);
+      deck.image = JSON.parse(imageSRC);
+      deck.id = ids[i];
+      data.decks.push(deck);
+    }
+    data.deckIDS = ids;
+  }
+  if (data.decks.length === 0) {
+    Deck.stashDeck(new Deck('default'));
+  }
+  Deck.setActiveDeck(data.activeDeck);
+  xhr.addEventListener('load', function () {
+    data.symbols = xhr.response.data;
+  });
+  for (i = 0; i < data.decks.length; i++) {
+    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
+  }
+});
 
 window.addEventListener('click', function (event) {
   if (!tabViewOpen || event.target.matches('.tab-view')) {
@@ -191,4 +234,27 @@ function onSelect(event) {
     return;
   }
   flickity.selectedElement.style.transform = zoomed;
+}
+
+function switchView(string) {
+  if (string === 'decks') {
+    $itemContainer.classList.add('hidden');
+    $deckView.classList.remove('hidden');
+    $deckView.innerHTML = '';
+    for (var i = 0; i < data.decks.length; i++) {
+      $deckView.appendChild(data.decks[i].renderDeckBox());
+    }
+    var $button = document.createElement('button');
+    $deckView.appendChild($button);
+    $button.addEventListener('click', function () {
+      var deck = new Deck('New Deck');
+      Deck.stashDeck(deck);
+      deck.render();
+      switchView('cards');
+    });
+  }
+  if (string === 'cards') {
+    $itemContainer.classList.remove('hidden');
+    $deckView.classList.add('hidden');
+  }
 }
