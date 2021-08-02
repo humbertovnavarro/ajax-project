@@ -34,6 +34,7 @@ header {
   backdrop-filter: blur(2px);
   width: 15rem;
   height: 100vh;
+  border-right: 5px solid black;
 }
 
 .slide {
@@ -273,18 +274,6 @@ header {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-
-/* .search-modal button {
-  box-shadow: 0 0 20px 1px  rgba(0, 0, 0, 0.301);
-  font-family: 'Average', sans-serif;
-  margin: 1rem;
-  color: white;
-  border-radius: 11px;
-  border: none;
-  width: 100px;
-  height: 25px;
-  background-color: #1b1717;
-} */
 
 h1 {
   font-weight: normal;

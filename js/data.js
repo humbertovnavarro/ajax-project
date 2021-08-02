@@ -8,6 +8,7 @@ var data = {
   deckIDS: [],
   decks: [],
   deckIndex: 0,
+  activeDeck: 1,
   nextDeckID: 1,
   mobileView: 'decks'
 };
@@ -138,8 +139,6 @@ class Card {
 class Deck {
   constructor(deckName, urlString = null) {
     this.id = data.nextDeckID;
-    data.deckIDS.push(this.id);
-    data.decks.push(this);
     this.name = deckName;
     this.cards = {};
     data.nextDeckID++;
@@ -148,8 +147,8 @@ class Deck {
   render() {
     $itemContainer.innerHTML = '';
     $stackContainer.innerHTML = '';
-    for (var i = 0; i < this.cards.length; i++) {
-      this.cards[i].render();
+    for (var key in this.cards) {
+      this.cards[key].render();
     }
   }
 
@@ -183,6 +182,7 @@ class Deck {
     if (this.cards[id].count <= 0) {
       this.cards[id].desktopElement.remove();
       this.cards[id].element.remove();
+      delete this.cards[id];
     }
   }
 
@@ -220,10 +220,20 @@ class Deck {
     return data.decks[data.deckIndex];
   }
 
-  static setActiveDeck(deck) {
+  static stashDeck(deck) {
+    deck.id = data.nextDeckID;
+    data.decks.push(deck);
+    data.deckIDS.push(deck.id);
+    data.deckIndex++;
+    data.activeDeck = deck.id;
+  }
+
+  static setActiveDeck(id) {
     for (var i = 0; i < data.decks.length; i++) {
-      if (data.decks[i].id === deck.id) {
+      if (data.decks[i].id === id) {
         data.deckIndex = i;
+        data.activeDeck = id;
+        data.decks[i].render();
       }
     }
   }
@@ -234,13 +244,32 @@ window.addEventListener('load', function () {
   xhr.open('GET', 'https://api.scryfall.com/symbology');
   xhr.responseType = 'json';
   xhr.send();
-  data.decks.push(new Deck('Default Deck'));
+  var idsJSON = this.localStorage.getItem('deckids');
+  var ids = JSON.parse(idsJSON);
+  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
+  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
+  if (ids !== null) {
+    for (var i = 0; i < ids.length; i++) {
+      var deckJSON = this.localStorage.getItem(ids[i]);
+      var deckString = JSON.parse(deckJSON);
+      var deck = Deck.loadFromString(deckString);
+      deck.id = ids[i];
+      data.decks.push(deck);
+    }
+    data.deckIDS = ids;
+  }
+  if (data.decks.length === 0) {
+    Deck.stashDeck(new Deck('default'));
+  }
+  Deck.setActiveDeck(data.activeDeck);
   xhr.addEventListener('load', function () {
     data.symbols = xhr.response.data;
   });
 });
 
 window.addEventListener('beforeunload', function () {
+  this.localStorage.setItem('activedeck', data.activeDeck);
+  this.localStorage.setItem('nextdeckid', data.nextDeckID);
   this.localStorage.setItem('deckids', JSON.stringify(data.deckIDS));
   for (var i = 0; i < data.decks.length; i++) {
     this.localStorage.setItem(data.decks[i].id, JSON.stringify(data.decks[i].serialize()));

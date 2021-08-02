@@ -5,7 +5,9 @@ var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
+// eslint-disable-next-line no-unused-vars
 var $itemContainer = document.querySelector('.majax-item-container');
+// eslint-disable-next-line no-unused-vars
 var $stackContainer = document.querySelector('.majax-stack-container');
 var $infoModal = document.querySelector('.info-modal');
 var $loadModal = document.querySelector('.load-modal');
