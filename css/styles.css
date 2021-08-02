@@ -103,6 +103,15 @@ header {
   margin-right: 5px;
 }
 
+.deck-big-text {
+  text-align: center;
+  font-family: 'Average', serif;
+  font-size: 2rem;
+  color: white;
+  background-color: transparent;
+  border: none;
+}
+
 .deck-image-box {
   backdrop-filter: brightness(20%);
 }
@@ -349,7 +358,7 @@ h1 {
   border: 1px solid #eeebdd;
 }
 
-input {
+.search-box {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   height: 1.3rem;

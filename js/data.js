@@ -161,7 +161,7 @@ class Deck {
     for (var key in this.cards) {
       this.cards[key].render();
     }
-    $deckBigText.textContent = this.name;
+    $deckBigText.value = this.name;
     $deckImageBox.style.backgroundImage = 'url(' + this.image + ')';
   }
 

@@ -26,13 +26,6 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
-var deckity = new Flickity($deckCarousel, options);
-$tabView.addEventListener('click', function (event) {
-  if (event.target.parentElement.getAttribute('data-link') !== null) {
-    switchView(event.target.parentElement.getAttribute('data-link'));
-  }
-});
-
 window.addEventListener('load', function () {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.scryfall.com/symbology');
@@ -62,9 +55,7 @@ window.addEventListener('load', function () {
     data.symbols = xhr.response.data;
   });
   for (i = 0; i < data.decks.length; i++) {
-    setTimeout(function () {
-      deckity.prepend(data.decks[i].renderDeckBox());
-    });
+    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
   }
 });
 
@@ -112,6 +103,10 @@ $searchModal.addEventListener('mousedown', function (event) {
 
 $loadMore.addEventListener('click', function () {
   searchMore();
+});
+
+$deckBigText.addEventListener('input', function () {
+  Deck.getActiveDeck().name = $deckBigText.value;
 });
 
 function toggleSearch(toggle) {
