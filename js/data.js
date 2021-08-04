@@ -141,8 +141,10 @@ class Card {
     if (this.xhr.response != null) {
       if (this.xhr.response.image_uris != null) {
         if (this.xhr.response.image_uris.art_crop != null) {
-          if (Deck.getActiveDeck().image === 'images/loader.svg') {
-            Deck.getActiveDeck().image = this.xhr.response.image_uris.art_crop;
+          var deck = Deck.getActiveDeck();
+          if (deck.image === 'images/loader.svg') {
+            deck.image = this.xhr.response.image_uris.art_crop;
+            deck.$deckBox.children[0].children[0].src = deck.image;
             $deckImageBox.style.backgroundImage = 'url(' + Deck.getActiveDeck().image + ')';
           }
         }
