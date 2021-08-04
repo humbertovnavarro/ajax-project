@@ -227,14 +227,10 @@ class Deck {
     $title.textContent = this.name;
     $deckBox.addEventListener('click', function (event) {
       switchView('cards');
-      if (data.activeDeck === this.id) {
-        return;
-      }
+      Deck.getActiveDeck().$deckBox.id = '';
       Deck.setActiveDeck(Number.parseInt(this.dataset.id));
-      for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
-        $deckContainerDesktop.children[i].classList.remove('active');
-      }
-      this.classList.add('active');
+      this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+      this.id = 'active';
     });
     this.$deckBox = $deckBox;
     return $deckBox;
@@ -285,6 +281,7 @@ class Deck {
         data.deckIndex = i;
         data.activeDeck = id;
         data.decks[i].render();
+        return;
       }
     }
   }
@@ -295,6 +292,7 @@ xhr.responseType = 'json';
 xhr.onload = function () {
   data.symbols = this.response.data;
   LoadDecks();
+  Deck.getActiveDeck().$deckBox.id = 'active';
 };
 xhr.send();
 

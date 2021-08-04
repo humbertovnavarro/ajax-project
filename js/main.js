@@ -2,6 +2,7 @@
 var $tabButton = document.querySelector('#tab-view');
 var tabViewOpen = false;
 var $deckContainerDesktop = document.querySelector('.deck-container');
+var $deckListDesktop = document.querySelector('.deck-list-desktop');
 var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
@@ -26,6 +27,41 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
+
+$deckListDesktop.addEventListener('click', function (event) {
+  if (event.target.dataset.control === 'right') {
+    var index = data.deckIndex;
+    if (data.deckIndex + 1 > data.decks.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+    var $deckBox = data.decks[index].$deckBox;
+    for (var i = 0; i < $deckListDesktop.children.length; i++) {
+      $deckListDesktop.children[i].id = '';
+    }
+    $deckBox.id = 'active';
+    Deck.getActiveDeck().$deckBox.id = '';
+    Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
+    $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+  }
+  if (event.target.dataset.control === 'left') {
+    var index = data.deckIndex;
+    if (index - 1 < 0) {
+      index = data.decks.length - 1;
+    } else {
+      index--;
+    }
+    var $deckBox = data.decks[index].$deckBox;
+    for (var i = 0; i < $deckListDesktop.children.length; i++) {
+      $deckListDesktop.children[i].id = '';
+    }
+    $deckBox.id = 'active';
+    Deck.getActiveDeck().$deckBox.id = '';
+    Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
+    $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+  }
+});
 
 window.addEventListener('click', function (event) {
   if (!tabViewOpen || event.target.matches('.tab-view')) {
@@ -74,10 +110,6 @@ $searchModal.addEventListener('mousedown', function (event) {
   if (event.target.matches('.search-modal')) {
     toggleSearch(false);
   }
-});
-
-$loadMore.addEventListener('click', function () {
-  searchMore();
 });
 
 $deckBigText.addEventListener('blur', function () {
