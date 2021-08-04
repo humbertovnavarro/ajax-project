@@ -153,9 +153,9 @@ class Card {
 }
 
 class Deck {
-  constructor(deckName, urlString = null) {
+  constructor(urlString = null) {
     this.id = data.nextDeckID;
-    this.name = deckName;
+    this.name = null;
     this.image = 'images/loader.svg';
     this.cards = {};
     data.nextDeckID++;
@@ -164,10 +164,13 @@ class Deck {
   render() {
     $itemContainer.innerHTML = '';
     $stackContainer.innerHTML = '';
+    $deckBigText.value = '';
     for (var key in this.cards) {
       this.cards[key].render();
     }
-    $deckBigText.value = this.name;
+    if (this.name !== null) {
+      $deckBigText.value = this.name;
+    }
     $deckImageBox.style.backgroundImage = 'url(' + this.image + ')';
   }
 
