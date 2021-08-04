@@ -227,14 +227,13 @@ class Deck {
     $deckBox.appendChild($title);
     $title.textContent = this.name;
     $deckBox.addEventListener('click', function (event) {
-      switchView('cards');
-      Deck.getActiveDeck().$deckBox.id = '';
-      Deck.setActiveDeck(Number.parseInt(this.dataset.id));
-      this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
-      for (var i = 0; i < $deckListDesktop.children.length; i++) {
-        $deckListDesktop.children[i].id = '';
+      for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+        $deckContainerDesktop.children[i].id = '';
       }
       this.id = 'active';
+      Deck.setActiveDeck(Number.parseInt(this.dataset.id));
+      this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+      switchView('cards');
     });
     this.$deckBox = $deckBox;
     return $deckBox;
