@@ -231,8 +231,12 @@ class Deck {
         return;
       }
       Deck.setActiveDeck(Number.parseInt(this.dataset.id));
+      for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+        $deckContainerDesktop.children[i].classList.remove('active');
+      }
       this.classList.add('active');
     });
+    this.$deckBox = $deckBox;
     return $deckBox;
   }
 
@@ -312,7 +316,7 @@ function LoadDecks() {
     data.deckIDS = ids;
   }
   if (data.decks.length === 0) {
-    Deck.stashDeck(new Deck('default'));
+    Deck.stashDeck(new Deck('New Deck'));
   }
   Deck.setActiveDeck(data.activeDeck);
   xhr.addEventListener('load', function () {

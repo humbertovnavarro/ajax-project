@@ -257,6 +257,14 @@ header {
   border-radius: 6px;
 }
 
+.deck.active {
+  border: 1px solid yellow;
+}
+
+.deck h2 {
+  font-size: 1.25rem;
+}
+
 .text-center {
   text-align: center;
 }

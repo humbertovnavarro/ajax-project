@@ -31,6 +31,13 @@ window.addEventListener('click', function (event) {
   if (!tabViewOpen || event.target.matches('.tab-view')) {
     return;
   }
+  if (event.target.parentElement.dataset.link === 'add-deck') {
+    var deck = new Deck('New Deck');
+    Deck.stashDeck(deck);
+    deck.render();
+    Deck.setActiveDeck(deck.id);
+    $deckContainerDesktop.appendChild(deck.renderDeckBox());
+  }
   $tabView.classList.remove('slide');
   tabViewOpen = false;
 });
@@ -73,7 +80,9 @@ $loadMore.addEventListener('click', function () {
   searchMore();
 });
 
-$deckBigText.addEventListener('input', function () {
+$deckBigText.addEventListener('blur', function () {
+  var $h1 = Deck.getActiveDeck().$deckBox.children[1];
+  $h1.textContent = $deckBigText.value;
   Deck.getActiveDeck().name = $deckBigText.value;
   for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
     if ($deckContainerDesktop.children[i].dataset.id === Deck.getActiveDeck().id) {
