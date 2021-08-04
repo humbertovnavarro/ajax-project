@@ -424,6 +424,10 @@ h1 {
     display: inherit;
   }
 
+  .load-modal {
+    left: 44%;
+  }
+
   .desktop {
     display: none;
   }
@@ -451,6 +455,7 @@ h1 {
   }
 
   .deck .art-crop {
+    width: 64px;
     margin-right: 0.5rem;
   }
 }
