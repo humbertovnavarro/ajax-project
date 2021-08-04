@@ -38,11 +38,10 @@ $deckListDesktop.addEventListener('click', function (event) {
       index++;
     }
     $deckBox = data.decks[index].$deckBox;
-    for (i = 0; i < $deckListDesktop.children.length; i++) {
-      $deckListDesktop.children[i].id = '';
+    for (i = 0; i < $deckContainerDesktop.children.length; i++) {
+      $deckContainerDesktop.children[i].id = '';
     }
     $deckBox.id = 'active';
-    Deck.getActiveDeck().$deckBox.id = '';
     Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
     $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
   }
@@ -54,7 +53,9 @@ $deckListDesktop.addEventListener('click', function (event) {
       index--;
     }
     $deckBox = data.decks[index].$deckBox;
-    Deck.getActiveDeck().$deckBox.id = '';
+    for (i = 0; i < $deckContainerDesktop.children.length; i++) {
+      $deckContainerDesktop.children[i].id = '';
+    }
     $deckBox.id = 'active';
     Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
     $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });

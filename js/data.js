@@ -231,7 +231,7 @@ class Deck {
       Deck.getActiveDeck().$deckBox.id = '';
       Deck.setActiveDeck(Number.parseInt(this.dataset.id));
       this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
-      for (i = 0; i < $deckListDesktop.children.length; i++) {
+      for (var i = 0; i < $deckListDesktop.children.length; i++) {
         $deckListDesktop.children[i].id = '';
       }
       this.id = 'active';
