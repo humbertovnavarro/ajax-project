@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unreachable-loop */
 /* exported data */
 /* exported Deck */
 /* exported Card */
