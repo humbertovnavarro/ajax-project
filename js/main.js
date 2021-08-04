@@ -82,7 +82,7 @@ window.addEventListener('click', function (event) {
     deck.render();
     Deck.setActiveDeck(deck.id);
     deck.$deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
-    switchView('decks');
+    switchView('cards');
   }
   $tabView.classList.remove('slide');
   tabViewOpen = false;

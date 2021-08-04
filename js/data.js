@@ -232,7 +232,9 @@ class Deck {
       }
       this.id = 'active';
       Deck.setActiveDeck(Number.parseInt(this.dataset.id));
-      this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+      if (window.innerWidth > 900) {
+        this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+      }
       switchView('cards');
     });
     this.$deckBox = $deckBox;
