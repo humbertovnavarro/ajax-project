@@ -81,6 +81,7 @@ window.addEventListener('click', function (event) {
     deck.render();
     Deck.setActiveDeck(deck.id);
     deck.$deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+    switchView('decks');
   }
   $tabView.classList.remove('slide');
   tabViewOpen = false;
