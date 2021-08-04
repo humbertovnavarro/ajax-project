@@ -17,6 +17,31 @@
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 </head>
 <body>
+  <div class="tab-view">
+    <div class="tab-container">
+      <div class="row flex-end padding-h-10px">
+        <span class="material-icons">list</span>
+      </div>
+      <div class="tab-content mobile" data-link="decks">
+        <h1>Decks</h1>
+        <span class="material-icons">layers</span>
+      </div>
+      <div class="tab-content mobile" data-link="cards">
+        <h1>Cards</h1>
+        <span class="material-icons">layers</span>
+      </div>
+      <a href="https://scryfall.com/docs/syntax" target="_blank">
+      <div class="tab-content">
+        <h1>Help</h1>
+        <span class="material-icons">help</span>
+      </div>
+      </a>
+      <div class="tab-content" data-link="add-deck">
+        <h1>Add Deck</h1>
+        <span class="material-icons">add</span>
+      </div>
+    </div>
+  </div>
   <div class="search-modal hidden">
     <div class="load-modal">
       <img src="images/loader.svg">
@@ -24,7 +49,7 @@
     <div class="carousel">
     </div>
     <div class="row space-between">
-      <button class="load-more">Next</button>
+
     </div>
   </div>
   <div class="info-modal hidden">
@@ -35,7 +60,7 @@
       <div class="column-half">
         <div class="row">
           <div class="padding-h-10px column-eigth line-right">
-            <span class="material-icons">list</span>
+            <span id="tab-view" class="material-icons">list</span>
           </div>
           <div class="padding-h-10px column-three-fourths">
             <h1>MAJAX</h1>
@@ -59,7 +84,7 @@
         <div class="row justify-center margin-v-5px">
           <div class="column-full deck-image-box">
             <div class="flex container-full justify-center vertical-center">
-              <h1>No Deck Selected</h1>
+              <input class="deck-big-text" value="New Deck">
             </div>
           </div>
         </div>
@@ -72,7 +97,9 @@
                 </div>
               </div>
               <div class="row justify-center">
-                  <div class="majax-item-container">
+                  <div class="majax-item-container card-view">
+                  </div>
+                  <div class="majax-item-container deck-view mobile hidden">
                   </div>
               </div>
           </div>
@@ -82,9 +109,11 @@
         <div class="row">
           <div class="deck-list-desktop">
             <div class="row space-between padding-h-10px">
-              <span class="material-icons">west</span>
+              <span data-control="left" class="material-icons">west</span>
               <h1>Decks</h1>
-              <span class="material-icons">east</span>
+              <span data-control="right" class="material-icons">east</span>
+            </div>
+            <div class="deck-container">
             </div>
           </div>
         </div>

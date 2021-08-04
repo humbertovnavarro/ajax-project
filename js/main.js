@@ -1,14 +1,23 @@
 /* eslint-disable no-undef */
+var $tabButton = document.querySelector('#tab-view');
+var tabViewOpen = false;
+var $deckContainerDesktop = document.querySelector('.deck-container');
+var $deckListDesktop = document.querySelector('.deck-list-desktop');
+var $tabView = document.querySelector('.tab-view');
 var $searchBoxes = document.querySelectorAll('.search-box');
 var $searchModal = document.querySelector('.search-modal');
 var $search = document.querySelector('.carousel');
-var $itemContainer = document.querySelector('.majax-item-container');
+var $deckBigText = document.querySelector('.deck-big-text');
+// eslint-disable-next-line no-unused-vars
+var $deckImageBox = document.querySelector('.deck-image-box');
+// eslint-disable-next-line no-unused-vars
+var $itemContainer = document.querySelector('.card-view');
+var $deckView = document.querySelector('.deck-view');
+// eslint-disable-next-line no-unused-vars
 var $stackContainer = document.querySelector('.majax-stack-container');
 var $infoModal = document.querySelector('.info-modal');
 var $loadModal = document.querySelector('.load-modal');
-var $loadMore = document.querySelector('.load-more');
 var flickity;
-var results;
 var options = {
   imagesLoaded: true,
   percentPosition: true,
@@ -16,6 +25,73 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
+
+$deckListDesktop.addEventListener('click', function (event) {
+  var index;
+  var i;
+  var $deckBox;
+  if (event.target.dataset.control === 'right') {
+    index = data.deckIndex;
+    if (data.deckIndex + 1 > data.decks.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+    $deckBox = data.decks[index].$deckBox;
+    for (i = 0; i < $deckContainerDesktop.children.length; i++) {
+      $deckContainerDesktop.children[i].id = '';
+    }
+    $deckBox.id = 'active';
+    Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
+    $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+  }
+  if (event.target.dataset.control === 'left') {
+    index = data.deckIndex;
+    if (index - 1 < 0) {
+      index = data.decks.length - 1;
+    } else {
+      index--;
+    }
+    $deckBox = data.decks[index].$deckBox;
+    for (i = 0; i < $deckContainerDesktop.children.length; i++) {
+      $deckContainerDesktop.children[i].id = '';
+    }
+    $deckBox.id = 'active';
+    Deck.setActiveDeck(Number.parseInt($deckBox.dataset.id));
+    $deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+  }
+});
+
+window.addEventListener('click', function (event) {
+  if (!tabViewOpen || event.target.matches('.tab-view')) {
+    return;
+  }
+  if (event.target.parentElement.dataset.link === 'decks') {
+    switchView('decks');
+  }
+  if (event.target.parentElement.dataset.link === 'cards') {
+    switchView('cards');
+  }
+  if (event.target.parentElement.dataset.link === 'add-deck') {
+    Deck.getActiveDeck().$deckBox.id = '';
+    var deck = new Deck('New Deck');
+    deck.$deckBox = deck.renderDeckBox();
+    $deckContainerDesktop.appendChild(deck.renderDeckBox());
+    deck.$deckBox.id = 'active';
+    Deck.stashDeck(deck);
+    deck.render();
+    Deck.setActiveDeck(deck.id);
+    deck.$deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+    switchView('cards');
+  }
+  $tabView.classList.remove('slide');
+  tabViewOpen = false;
+});
+
+$tabButton.addEventListener('click', function () {
+  setTimeout(function () { tabViewOpen = true; });
+  $tabView.classList.add('slide');
+});
 
 $infoModal.addEventListener('click', function () {
   this.classList.add('hidden');
@@ -46,8 +122,15 @@ $searchModal.addEventListener('mousedown', function (event) {
   }
 });
 
-$loadMore.addEventListener('click', function () {
-  searchMore();
+$deckBigText.addEventListener('blur', function () {
+  var $h1 = Deck.getActiveDeck().$deckBox.children[1];
+  $h1.textContent = $deckBigText.value;
+  Deck.getActiveDeck().name = $deckBigText.value;
+  for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+    if ($deckContainerDesktop.children[i].dataset.id === Deck.getActiveDeck().id) {
+      $deckContainerDesktop.children[i].innerHTML = Deck.getActiveDeck().name;
+    }
+  }
 });
 
 function toggleSearch(toggle) {
@@ -89,34 +172,6 @@ function search() {
     if (xhr.response.data === undefined || xhr.response.data.length === 0 || xhr.response.data === null) {
       $loadModal.classList.add('hidden');
       $searchModal.classList.add('hidden');
-      return;
-    }
-    results = xhr.response;
-    for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
-      if (xhr.response.data[i].image_uris !== undefined) {
-        var cell = generateCard(this.response.data[i]);
-        cell.setAttribute('data-index', i);
-        flickity.prepend(cell);
-      }
-    }
-    $loadModal.classList.add('hidden');
-    if (xhr.response.nextPage !== undefined) {
-      $loadMore.classList.remove('hidden');
-    } else {
-      $loadMore.classList.add('hidden');
-    }
-  };
-  xhr.send();
-}
-
-function searchMore() {
-  previousResults = results;
-  xhr.open('GET', search.nextPage);
-  getCurrentSearchBox().value = '';
-  xhr.responseType = 'json';
-  $loadModal.classList.remove('hidden');
-  xhr.onload = function () {
-    if (!xhr.response.data || xhr.response.data === undefined) {
       return;
     }
     results = xhr.response;
@@ -173,4 +228,19 @@ function onSelect(event) {
     return;
   }
   flickity.selectedElement.style.transform = zoomed;
+}
+
+function switchView(string) {
+  if (string === 'decks') {
+    $itemContainer.classList.add('hidden');
+    $deckView.classList.remove('hidden');
+    $deckView.innerHTML = '';
+    for (var i = 0; i < data.decks.length; i++) {
+      $deckView.appendChild(data.decks[i].renderDeckBox());
+    }
+  }
+  if (string === 'cards') {
+    $itemContainer.classList.remove('hidden');
+    $deckView.classList.add('hidden');
+  }
 }

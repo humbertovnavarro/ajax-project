@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unreachable-loop */
 /* exported data */
 /* exported Deck */
 /* exported Card */
@@ -8,6 +7,7 @@ var data = {
   deckIDS: [],
   decks: [],
   deckIndex: 0,
+  activeDeck: 1,
   nextDeckID: 1,
   mobileView: 'decks'
 };
@@ -26,10 +26,10 @@ class Card {
     var $cardListItem = document.createElement('div');
     $cardListItem.addEventListener('click', function (event) {
       if (event.target.getAttribute('data-control') === 'up') {
-        Deck.getActiveDeck().addCard(this.getAttribute('data-id'));
+        Deck.getActiveDeck().addCard(this.dataset.id);
       }
       if (event.target.getAttribute('data-control') === 'down') {
-        Deck.getActiveDeck().removeCard(this.getAttribute('data-id'));
+        Deck.getActiveDeck().removeCard(this.dataset.id);
       }
     });
     $cardListItem.className = 'majax-item';
@@ -69,7 +69,7 @@ class Card {
     this.name = $name;
     this.image = $image;
     this.manaContainer = $manaContainer;
-
+    this.fullCard = 'images/loaderblack.svg';
     var $cardStackItem = document.createElement('div');
     $cardStackItem.setAttribute('data-id', id);
     $cardStackItem.className = 'majax-stack';
@@ -88,11 +88,9 @@ class Card {
     this.xhr.send();
   }
 
-  render(itemContainer, stackContainer) {
-    itemContainer.appendChild(this.element);
-    if (stackContainer) {
-      stackContainer.appendChild(this.desktopElement);
-    }
+  render() {
+    $itemContainer.appendChild(this.element);
+    $stackContainer.appendChild(this.desktopElement);
   }
 
   onload() {
@@ -110,10 +108,12 @@ class Card {
       for (i = 0; i < manaSymbols.length; i++) {
         var $image = document.createElement('img');
         $image.className = 'mana-symbol';
-        $image.src = Card.getSymbol(manaSymbols[i]);
+        var source = Card.getSymbol(manaSymbols[i]);
+        $image.src = source;
         this.manaContainer.appendChild($image);
       }
     }
+    this.symbols = manaSymbols;
     for (i = 0; i < this.desktopElement.children.length; i++) {
       this.desktopElement.children[i].src = this.fullCard;
     }
@@ -123,29 +123,52 @@ class Card {
         return;
       }
       $infoModal.classList.remove('hidden');
-      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.dataset.id].fullCard;
+    });
+    this.desktopElement.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+      Deck.getActiveDeck().removeCard(this.dataset.id);
     });
 
-    this.element.addEventListener('click', function () {
+    this.element.addEventListener('click', function (event) {
       if (event.target.className === 'material-icons') {
         return;
       }
       $infoModal.classList.remove('hidden');
-      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.dataset.id].fullCard;
     });
-
+    if (this.xhr.response != null) {
+      if (this.xhr.response.image_uris != null) {
+        if (this.xhr.response.image_uris.art_crop != null) {
+          var deck = Deck.getActiveDeck();
+          if (deck.image === 'images/loader.svg') {
+            deck.image = this.xhr.response.image_uris.art_crop;
+            deck.$deckBox.children[0].children[0].src = deck.image;
+            $deckImageBox.style.backgroundImage = 'url(' + Deck.getActiveDeck().image + ')';
+          }
+        }
+      }
+    }
   }
 }
 
 class Deck {
   constructor(deckName, urlString = null) {
-    $itemContainer.innerHTML = '';
-    $stackContainer.innerHTML = '';
     this.id = data.nextDeckID;
-    data.deckIDS.push(this.id);
     this.name = deckName;
+    this.image = 'images/loader.svg';
     this.cards = {};
     data.nextDeckID++;
+  }
+
+  render() {
+    $itemContainer.innerHTML = '';
+    $stackContainer.innerHTML = '';
+    for (var key in this.cards) {
+      this.cards[key].render();
+    }
+    $deckBigText.value = this.name;
+    $deckImageBox.style.backgroundImage = 'url(' + this.image + ')';
   }
 
   getCard(id) {
@@ -163,7 +186,9 @@ class Deck {
       this.cards[id].counter.textContent = 'x' + this.cards[id].count;
     } else {
       this.cards[id] = new Card(id);
-      this.cards[id].render($itemContainer, $stackContainer);
+      if (this === Deck.getActiveDeck()) {
+        this.cards[id].render();
+      }
     }
     return this.cards[id];
   }
@@ -176,6 +201,7 @@ class Deck {
     if (this.cards[id].count <= 0) {
       this.cards[id].desktopElement.remove();
       this.cards[id].element.remove();
+      delete this.cards[id];
     }
   }
 
@@ -185,6 +211,34 @@ class Deck {
       string += key + ';' + this.cards[key].count + ';';
     }
     return string.replace(' ', '%20');
+  }
+
+  renderDeckBox() {
+    var $deckBox = document.createElement('div');
+    $deckBox.setAttribute('data-id', this.id);
+    $deckBox.className = 'deck';
+    var $artCrop = document.createElement('div');
+    $artCrop.className = 'art-crop';
+    var $image = document.createElement('img');
+    $image.src = this.image;
+    $artCrop.appendChild($image);
+    $deckBox.appendChild($artCrop);
+    var $title = document.createElement('h2');
+    $deckBox.appendChild($title);
+    $title.textContent = this.name;
+    $deckBox.addEventListener('click', function (event) {
+      for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+        $deckContainerDesktop.children[i].id = '';
+      }
+      this.id = 'active';
+      Deck.setActiveDeck(Number.parseInt(this.dataset.id));
+      if (window.innerWidth > 900) {
+        this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
+      }
+      switchView('cards');
+    });
+    this.$deckBox = $deckBox;
+    return $deckBox;
   }
 
   static getQR() {
@@ -213,30 +267,75 @@ class Deck {
     return data.decks[data.deckIndex];
   }
 
-  static setActiveDeck(deck) {
+  static import(string) {
+    var deck = Deck.loadFromString(string);
+    Deck.stashDeck(deck);
+  }
+
+  static stashDeck(deck) {
+    deck.id = data.nextDeckID;
+    data.decks.push(deck);
+    data.deckIDS.push(deck.id);
+    data.deckIndex++;
+    data.activeDeck = deck.id;
+  }
+
+  static setActiveDeck(id) {
     for (var i = 0; i < data.decks.length; i++) {
-      if (data.decks[i].id === deck.id) {
+      if (data.decks[i].id === id) {
         data.deckIndex = i;
+        data.activeDeck = id;
+        data.decks[i].render();
+        return;
       }
     }
   }
 }
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://api.scryfall.com/symbology');
+xhr.responseType = 'json';
+xhr.onload = function () {
+  data.symbols = this.response.data;
+  LoadDecks();
+  Deck.getActiveDeck().$deckBox.id = 'active';
+};
+xhr.send();
 
-window.addEventListener('load', function () {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.scryfall.com/symbology');
-  xhr.responseType = 'json';
-  xhr.send();
+function LoadDecks() {
+  var idsJSON = this.localStorage.getItem('deckids');
+  var ids = JSON.parse(idsJSON);
+  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
+  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
+  if (ids !== null) {
+    for (var i = 0; i < ids.length; i++) {
+      var deckJSON = this.localStorage.getItem(ids[i]);
+      var imageSRC = localStorage.getItem(ids[i] + '_image');
+      var deckString = JSON.parse(deckJSON);
+      var deck = Deck.loadFromString(deckString);
+      deck.image = JSON.parse(imageSRC);
+      deck.id = ids[i];
+      data.decks.push(deck);
+    }
+    data.deckIDS = ids;
+  }
+  if (data.decks.length === 0) {
+    Deck.stashDeck(new Deck('New Deck'));
+  }
+  Deck.setActiveDeck(data.activeDeck);
   xhr.addEventListener('load', function () {
     data.symbols = xhr.response.data;
-    var deck = Deck.loadFromString(JSON.parse(localStorage.getItem('1')));
-    data.decks.push(deck);
   });
-});
+  for (i = 0; i < data.decks.length; i++) {
+    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
+  }
+}
 
 window.addEventListener('beforeunload', function () {
+  this.localStorage.setItem('activedeck', data.activeDeck);
+  this.localStorage.setItem('nextdeckid', data.nextDeckID);
   this.localStorage.setItem('deckids', JSON.stringify(data.deckIDS));
   for (var i = 0; i < data.decks.length; i++) {
+    this.localStorage.setItem(data.decks[i].id + '_image', JSON.stringify(data.decks[i].image));
     this.localStorage.setItem(data.decks[i].id, JSON.stringify(data.decks[i].serialize()));
   }
 });
