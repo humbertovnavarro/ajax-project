@@ -27,10 +27,10 @@ class Card {
     var $cardListItem = document.createElement('div');
     $cardListItem.addEventListener('click', function (event) {
       if (event.target.getAttribute('data-control') === 'up') {
-        Deck.getActiveDeck().addCard(this.getAttribute('data-id'));
+        Deck.getActiveDeck().addCard(this.dataset.id);
       }
       if (event.target.getAttribute('data-control') === 'down') {
-        Deck.getActiveDeck().removeCard(this.getAttribute('data-id'));
+        Deck.getActiveDeck().removeCard(this.dataset.id);
       }
     });
     $cardListItem.className = 'majax-item';
@@ -124,7 +124,11 @@ class Card {
         return;
       }
       $infoModal.classList.remove('hidden');
-      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.dataset.id].fullCard;
+    });
+    this.desktopElement.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+      Deck.getActiveDeck().removeCard(this.dataset.id);
     });
 
     this.element.addEventListener('click', function (event) {
@@ -132,7 +136,7 @@ class Card {
         return;
       }
       $infoModal.classList.remove('hidden');
-      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
+      $infoModal.children[0].src = Deck.getActiveDeck().cards[this.dataset.id].fullCard;
     });
     if (this.xhr.response != null) {
       if (this.xhr.response.image_uris != null) {
@@ -226,7 +230,7 @@ class Deck {
       if (data.activeDeck === this.id) {
         return;
       }
-      Deck.setActiveDeck(Number.parseInt(this.getAttribute('data-id')));
+      Deck.setActiveDeck(Number.parseInt(this.dataset.id));
       this.classList.add('active');
     });
     return $deckBox;
