@@ -11,6 +11,15 @@ header {
   background-color: #ce1212;
 }
 
+h1 {
+  font-weight: normal;
+  font-family: 'Philosopher', sans-serif;
+}
+
+#active {
+  border: 1px solid yellow;
+}
+
 .material-icons {
   font-size: 40px;
 }
@@ -259,13 +268,9 @@ header {
   overflow-x: clip;
   padding-right: 1rem;
   height: 2rem;
-  background-color: #000;
+  background-color: #1b1717;
   color: #eeebdd;
   border-radius: 6px;
-}
-
-#active {
-  border: 1px solid yellow;
 }
 
 .deck h2 {
@@ -334,11 +339,6 @@ header {
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-}
-
-h1 {
-  font-weight: normal;
-  font-family: 'Philosopher', sans-serif;
 }
 
 .deck-image-box h1 {
@@ -425,7 +425,7 @@ h1 {
   }
 
   .load-modal {
-    left: 44%;
+    left: 40%;
   }
 
   .desktop {
