@@ -26,38 +26,6 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
-window.addEventListener('load', function () {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://api.scryfall.com/symbology');
-  xhr.responseType = 'json';
-  xhr.send();
-  var idsJSON = this.localStorage.getItem('deckids');
-  var ids = JSON.parse(idsJSON);
-  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
-  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
-  if (ids !== null) {
-    for (var i = 0; i < ids.length; i++) {
-      var deckJSON = this.localStorage.getItem(ids[i]);
-      var imageSRC = localStorage.getItem(ids[i] + '_image');
-      var deckString = JSON.parse(deckJSON);
-      var deck = Deck.loadFromString(deckString);
-      deck.image = JSON.parse(imageSRC);
-      deck.id = ids[i];
-      data.decks.push(deck);
-    }
-    data.deckIDS = ids;
-  }
-  if (data.decks.length === 0) {
-    Deck.stashDeck(new Deck('default'));
-  }
-  Deck.setActiveDeck(data.activeDeck);
-  xhr.addEventListener('load', function () {
-    data.symbols = xhr.response.data;
-  });
-  for (i = 0; i < data.decks.length; i++) {
-    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
-  }
-});
 
 window.addEventListener('click', function (event) {
   if (!tabViewOpen || event.target.matches('.tab-view')) {
@@ -107,6 +75,11 @@ $loadMore.addEventListener('click', function () {
 
 $deckBigText.addEventListener('input', function () {
   Deck.getActiveDeck().name = $deckBigText.value;
+  for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+    if ($deckContainerDesktop.children[i].dataset.id === Deck.getActiveDeck().id) {
+      $deckContainerDesktop.children[i].innerHTML = Deck.getActiveDeck().name;
+    }
+  }
 });
 
 function toggleSearch(toggle) {

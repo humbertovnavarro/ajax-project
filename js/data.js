@@ -70,7 +70,7 @@ class Card {
     this.name = $name;
     this.image = $image;
     this.manaContainer = $manaContainer;
-
+    this.fullCard = 'images/loaderblack.svg';
     var $cardStackItem = document.createElement('div');
     $cardStackItem.setAttribute('data-id', id);
     $cardStackItem.className = 'majax-stack';
@@ -109,7 +109,8 @@ class Card {
       for (i = 0; i < manaSymbols.length; i++) {
         var $image = document.createElement('img');
         $image.className = 'mana-symbol';
-        $image.src = Card.getSymbol(manaSymbols[i]);
+        var source = Card.getSymbol(manaSymbols[i]);
+        $image.src = source;
         this.manaContainer.appendChild($image);
       }
     }
@@ -126,7 +127,7 @@ class Card {
       $infoModal.children[0].src = Deck.getActiveDeck().cards[this.getAttribute('data-id')].fullCard;
     });
 
-    this.element.addEventListener('click', function () {
+    this.element.addEventListener('click', function (event) {
       if (event.target.className === 'material-icons') {
         return;
       }
@@ -278,6 +279,43 @@ class Deck {
         data.decks[i].render();
       }
     }
+  }
+}
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://api.scryfall.com/symbology');
+xhr.responseType = 'json';
+xhr.onload = function () {
+  data.symbols = this.response.data;
+  LoadDecks();
+};
+xhr.send();
+
+function LoadDecks() {
+  var idsJSON = this.localStorage.getItem('deckids');
+  var ids = JSON.parse(idsJSON);
+  data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
+  data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
+  if (ids !== null) {
+    for (var i = 0; i < ids.length; i++) {
+      var deckJSON = this.localStorage.getItem(ids[i]);
+      var imageSRC = localStorage.getItem(ids[i] + '_image');
+      var deckString = JSON.parse(deckJSON);
+      var deck = Deck.loadFromString(deckString);
+      deck.image = JSON.parse(imageSRC);
+      deck.id = ids[i];
+      data.decks.push(deck);
+    }
+    data.deckIDS = ids;
+  }
+  if (data.decks.length === 0) {
+    Deck.stashDeck(new Deck('default'));
+  }
+  Deck.setActiveDeck(data.activeDeck);
+  xhr.addEventListener('load', function () {
+    data.symbols = xhr.response.data;
+  });
+  for (i = 0; i < data.decks.length; i++) {
+    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
   }
 }
 
