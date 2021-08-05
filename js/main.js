@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+var $deletingDeckBox;
 var $deleteModal = document.querySelector('.delete-modal-container');
 var $tabButton = document.querySelector('#tab-view');
 var tabViewOpen = false;
@@ -30,6 +31,7 @@ var options = {
 $deleteModal.addEventListener('click', function (event) {
   if (event.target.dataset.control === 'delete') {
     $deleteModal.parentElement.classList.add('hidden');
+    $deletingDeckBox.remove();
     Deck.deleteActive();
     switchView('decks');
   }
@@ -249,7 +251,7 @@ function switchView(string) {
     $deckView.classList.remove('hidden');
     $deckView.innerHTML = '';
     for (var i = 0; i < data.decks.length; i++) {
-      $deckView.appendChild(data.decks[i].renderDeckBox());
+      $deckView.appendChild(data.decks[i].renderDeckBoxMobile());
     }
   }
   if (string === 'cards') {

@@ -214,6 +214,40 @@ class Deck {
     return string.replace(' ', '%20');
   }
 
+  renderDeckBoxMobile() {
+    var $deckBox = document.createElement('div');
+    $deckBox.setAttribute('data-id', this.id);
+    $deckBox.className = 'deck';
+    var $artCrop = document.createElement('div');
+    $artCrop.className = 'art-crop';
+    var $image = document.createElement('img');
+    $image.src = this.image;
+    $artCrop.appendChild($image);
+    $deckBox.appendChild($artCrop);
+    var $title = document.createElement('h2');
+    $deckBox.appendChild($title);
+    $title.textContent = this.name;
+    var $trashCan = document.createElement('span');
+    $trashCan.className = 'material-icons delete-icon';
+    $trashCan.setAttribute('data-control', 'delete');
+    $trashCan.textContent = 'delete_icon';
+    $deckBox.appendChild($trashCan);
+    $deckBox.addEventListener('click', function (event) {
+      if (event.target.dataset.control === 'delete') {
+        $deletingDeckBox = this;
+        switchView('delete');
+      }
+      for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+        $deckContainerDesktop.children[i].id = '';
+      }
+      this.id = 'active';
+      var id = Number.parseInt(this.dataset.id);
+      Deck.setActiveDeck(id);
+      switchView('cards');
+    });
+    return $deckBox;
+  }
+
   renderDeckBox() {
     var $deckBox = document.createElement('div');
     $deckBox.setAttribute('data-id', this.id);
@@ -233,24 +267,21 @@ class Deck {
     $trashCan.textContent = 'delete_icon';
     $deckBox.appendChild($trashCan);
     $deckBox.addEventListener('click', function (event) {
-      if (event.target.dataset.id === data.activeDeck) {
-        return;
-      }
       if (event.target.dataset.control === 'delete') {
+        $deletingDeckBox = this;
         switchView('delete');
       }
       for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
         $deckContainerDesktop.children[i].id = '';
       }
       this.id = 'active';
-      Deck.setActiveDeck(Number.parseInt(this.dataset.id));
+      var id = Number.parseInt(this.dataset.id);
+      Deck.setActiveDeck(id);
       if (window.innerWidth > 900) {
         this.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
       }
-      switchView('cards');
     });
     this.$deckBox = $deckBox;
-    return $deckBox;
   }
 
   static getQR() {
@@ -391,7 +422,8 @@ function LoadDecks() {
     data.symbols = xhr.response.data;
   });
   for (i = 0; i < data.decks.length; i++) {
-    $deckContainerDesktop.appendChild(data.decks[i].renderDeckBox());
+    data.decks[i].renderDeckBox();
+    $deckContainerDesktop.appendChild(data.decks[i].$deckBox);
   }
 }
 
