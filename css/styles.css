@@ -375,8 +375,26 @@ a {
   background-color: rgba(0, 0, 0, 0.801);
 }
 
+.qr-modal {
+  z-index: 4;
+}
+
 .delete-modal {
   z-index: 3;
+}
+
+.qr-modal p {
+  font-size: larger;
+  margin-top: 7%;
+  color: #eeb;
+  text-align: center;
+}
+
+.qr-modal img {
+  position: absolute;
+  width: 25%;
+  left: 38%;
+  top: 20%;
 }
 
 .carousel {
@@ -469,6 +487,20 @@ a {
 @media only screen and (max-width: 900px) {
   .mobile {
     display: inherit;
+  }
+
+  .qr-modal p {
+    font-size: larger;
+    margin-top: 50%;
+    color: #eeb;
+    text-align: center;
+  }
+
+  .qr-modal img {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    top: 40%;
   }
 
   .delete-modal-container {
