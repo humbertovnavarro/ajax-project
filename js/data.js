@@ -306,15 +306,28 @@ class Deck {
 
   static deleteActive() {
     if (data.decks.length === 1) {
-      return;
+      $deckContainerDesktop.innerHTML = '';
+      $stackContainer.innerHTML = '';
+      var deck = data.decks[0];
+      localStorage.removeItem(deck.id);
+      localStorage.removeItem(deck.id + '_image');
+      deck.name = 'New Deck';
+      deck.cards = {};
+      deck.id = 0;
+      data.image = 'images/loader.svg';
+      deck.render();
+      deck.renderDeckBox();
+      $deckContainerDesktop.appendChild(deck.$deckBox);
+      deck.$deckBox.id = 'active';
+    } else {
+      var deck = Deck.getActiveDeck();
+      deck.$deckBox.remove();
+      localStorage.removeItem(deck.id);
+      localStorage.removeItem(deck.id + '_image');
+      data.deckIDS.splice(data.deckIDS.indexOf(data.deckIndex), 1);
+      data.decks.splice(data.decks.indexOf(deck), 1);
+      Deck.setActiveDeck(data.deckIDS[0]);
     }
-    var deck = Deck.getActiveDeck();
-    deck.$deckBox.remove();
-    localStorage.removeItem(deck.id);
-    localStorage.removeItem(deck.id + '_image');
-    data.deckIDS.splice(data.deckIDS.indexOf(data.deckIndex), 1);
-    data.decks.splice(data.decks.indexOf(deck), 1);
-    Deck.setActiveDeck(data.deckIDS[0]);
   }
 }
 var xhr = new XMLHttpRequest();
