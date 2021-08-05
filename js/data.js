@@ -154,11 +154,9 @@ class Card {
 
 class Deck {
   constructor(urlString = null) {
-    this.id = data.nextDeckID;
     this.name = null;
     this.image = 'images/loader.svg';
     this.cards = {};
-    data.nextDeckID++;
   }
 
   render() {

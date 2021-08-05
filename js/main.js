@@ -86,9 +86,9 @@ window.addEventListener('click', function (event) {
   if (event.target.parentElement.dataset.link === 'add-deck') {
     Deck.getActiveDeck().$deckBox.id = '';
     var deck = new Deck('New Deck');
+    Deck.stashDeck(deck);
     $deckContainerDesktop.appendChild(deck.renderDeckBox());
     deck.$deckBox.id = 'active';
-    Deck.stashDeck(deck);
     deck.render();
     Deck.setActiveDeck(deck.id);
     deck.$deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
