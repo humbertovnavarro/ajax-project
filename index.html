@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <div class="search-modal hidden">
+  <div class="modal search-modal hidden">
     <div class="load-modal">
       <img src="images/loader.svg">
     </div>
@@ -52,8 +52,19 @@
 
     </div>
   </div>
-  <div class="info-modal hidden">
+  <div class="modal info-modal hidden">
     <img src="https://http.cat/204">
+  </div>
+  <div class="modal delete-modal row justify-center hidden">
+    <div class="delete-modal-container">
+      <div class="row justify-center">
+        <p>Are you sure you want to delete this deck? <br> It will be lost forever.</p>
+      </div>
+      <div class="row space-between margin-top-3rem">
+        <button data-control="cancel">Cancel</button>
+        <button data-control="delete">Confirm</button>
+      </div>
+    </div>
   </div>
   <header>
     <div class="row space-between vertical-center">
@@ -71,7 +82,7 @@
         <div class="row">
           <div class="padding-h-10px column-eigth">
             <span class="material-icons">
-            qr_code
+              qr_code
             </span>
           </div>
         </div>

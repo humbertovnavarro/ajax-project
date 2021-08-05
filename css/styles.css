@@ -272,6 +272,7 @@ a {
 }
 
 .deck {
+  position: relative;
   margin: 1px;
   align-items: center;
   display: flex;
@@ -318,6 +319,49 @@ a {
   font-size: large;
 }
 
+.delete-icon {
+  display: none;
+  position: absolute;
+  color: red;
+  left: 12rem;
+}
+
+#active .delete-icon {
+  display: block;
+}
+
+.delete-modal-container {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.253);
+  margin-left: 5px;
+  margin-right: 5px;
+  color: #eeb;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 11px;
+  padding: 3rem;
+  background-color: #1b1717;
+  margin-top: 25vh;
+  width: 556px;
+  height: 30vh;
+}
+
+.delete-modal-container button {
+  border: none;
+  font-family: 'Average', sans-serif;
+  font-size: large;
+  border-radius: 5px;
+  width: 185px;
+  height: 33px;
+}
+
+.delete-modal-container button:hover {
+  background-color: #eeb;
+}
+
+.delete-modal {
+  z-index: 3;
+}
+
 .load-modal {
   z-index: 1;
   position: absolute;
@@ -325,17 +369,8 @@ a {
   left: 35%;
 }
 
-.search-modal {
+.modal {
   z-index: 1;
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  backdrop-filter: blur(2px);
-  background-color: rgba(0, 0, 0, 0.801);
-}
-
-.info-modal {
-  z-index: 3;
   position: absolute;
   width: 100%;
   height: 100vh;

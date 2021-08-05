@@ -229,7 +229,19 @@ class Deck {
     var $title = document.createElement('h2');
     $deckBox.appendChild($title);
     $title.textContent = this.name;
+    var $trashCan = document.createElement('span');
+    $trashCan.className = 'material-icons delete-icon';
+    $trashCan.setAttribute('data-control', 'delete');
+    $trashCan.textContent = 'delete_icon';
+    $deckBox.appendChild($trashCan);
     $deckBox.addEventListener('click', function (event) {
+      if (event.target.dataset.id === data.activeDeck) {
+        return;
+      }
+      if (event.target.dataset.control === 'delete') {
+        switchView('delete');
+        return;
+      }
       for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
         $deckContainerDesktop.children[i].id = '';
       }
@@ -292,6 +304,19 @@ class Deck {
         return;
       }
     }
+  }
+
+  static deleteActive() {
+    if (data.decks.length === 1) {
+      return;
+    }
+    var deck = Deck.getActiveDeck();
+    deck.$deckBox.remove();
+    localStorage.removeItem(deck.id);
+    localStorage.removeItem(deck.id + '_image');
+    data.deckIDS.splice(data.deckIDS.indexOf(data.deckIndex), 1);
+    data.decks.splice(data.decks.indexOf(deck), 1);
+    Deck.setActiveDeck(data.deckIDS[0]);
   }
 }
 var xhr = new XMLHttpRequest();
