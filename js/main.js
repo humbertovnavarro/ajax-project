@@ -1,4 +1,6 @@
 /* eslint-disable no-undef */
+var $qrButton = document.querySelector('.qr-button');
+var $qrModal = document.querySelector('.qr-modal');
 var view = null;
 var $cardList = document.querySelector('.card-list');
 var $searchIcon = document.querySelector('.search-icon');
@@ -30,6 +32,13 @@ var options = {
   freeScroll: false,
   pageDots: false
 };
+$qrButton.addEventListener('click', function (event) {
+  switchView('qr');
+});
+
+$qrModal.addEventListener('click', function (event) {
+  $qrModal.classList.add('hidden');
+});
 
 $deleteModal.addEventListener('click', function (event) {
   if (event.target.dataset.control === 'delete') {
@@ -295,5 +304,8 @@ function switchView(string) {
   }
   if (string === 'delete') {
     $deleteModal.parentElement.classList.remove('hidden');
+  }
+  if (string === 'qr') {
+    $qrModal.classList.remove('hidden');
   }
 }
