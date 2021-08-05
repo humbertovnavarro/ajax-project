@@ -7,6 +7,10 @@
   width: 100% / 2;
 }
 
+.column-fourth {
+  width: 25%;
+}
+
 .column-full {
   width: 100%;
 }
@@ -58,6 +62,10 @@
 
 .margin-5px {
   margin: 5px;
+}
+
+.margin-top-3rem {
+  margin-top: 3rem;
 }
 
 .margin-v-5px {
