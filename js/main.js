@@ -86,13 +86,13 @@ window.addEventListener('click', function (event) {
   if (event.target.parentElement.dataset.link === 'add-deck') {
     Deck.getActiveDeck().$deckBox.id = '';
     var deck = new Deck('New Deck');
-    Deck.stashDeck(deck);
-    $deckContainerDesktop.appendChild(deck.renderDeckBox());
-    deck.$deckBox.id = 'active';
+    deck.id = data.nextDeckID;
+    data.nextDeckID++;
+    data.deckIDS.push(deck.id);
+    data.decks.push(deck);
     deck.render();
-    Deck.setActiveDeck(deck.id);
-    deck.$deckBox.scrollIntoView({ alignToTop: true, behavior: 'smooth', block: 'center' });
-    switchView('cards');
+    deck.renderDeckBox();
+    $deckContainerDesktop.appendChild(deck.$deckBox);
   }
   $tabView.classList.remove('slide');
   tabViewOpen = false;

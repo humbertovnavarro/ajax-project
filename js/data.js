@@ -153,8 +153,8 @@ class Card {
 }
 
 class Deck {
-  constructor(urlString = null) {
-    this.name = null;
+  constructor(name = null) {
+    this.name = name;
     this.image = 'images/loader.svg';
     this.cards = {};
   }
@@ -345,7 +345,15 @@ function LoadDecks() {
     data.deckIDS = ids;
   }
   if (data.decks.length === 0) {
-    Deck.stashDeck(new Deck('New Deck'));
+    var deck = new Deck('New Deck');
+    data.deckIDS = [];
+    data.decks = [];
+    data.deckIndex = 0;
+    data.activeDeck = 0;
+    data.nextDeckID = 1;
+    data.mobileView = 'decks';
+    deck.id = 0;
+    data.decks.push(deck);
   }
   Deck.setActiveDeck(data.activeDeck);
   xhr.addEventListener('load', function () {
