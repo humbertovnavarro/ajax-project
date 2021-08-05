@@ -312,6 +312,7 @@ a {
 }
 
 .search-icon {
+  display: inherit;
   color: black;
   position: absolute;
   left: 18px;
@@ -358,10 +359,6 @@ a {
   background-color: #eeb;
 }
 
-.delete-modal {
-  z-index: 3;
-}
-
 .load-modal {
   z-index: 1;
   position: absolute;
@@ -376,6 +373,10 @@ a {
   height: 100vh;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.801);
+}
+
+.delete-modal {
+  z-index: 3;
 }
 
 .carousel {
@@ -489,7 +490,7 @@ a {
     display: inherit;
     position: absolute;
     color: red;
-    left: 22rem;
+    left: 20rem;
   }
 
   .load-modal {

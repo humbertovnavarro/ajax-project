@@ -377,6 +377,7 @@ class Deck {
       Deck.getActiveDeck().render();
       Deck.getActiveDeck().$deckBox.id = 'active';
     }
+    switchView('decks');
   }
 }
 var xhr = new XMLHttpRequest();
@@ -397,10 +398,8 @@ function LoadDecks() {
   if (ids !== null) {
     for (var i = 0; i < ids.length; i++) {
       var deckJSON = this.localStorage.getItem(ids[i]);
-      var imageSRC = localStorage.getItem(ids[i] + '_image');
       var deckString = JSON.parse(deckJSON);
       var deck = Deck.loadFromString(deckString);
-      deck.image = JSON.parse(imageSRC);
       deck.id = ids[i];
       data.decks.push(deck);
     }

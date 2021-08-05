@@ -1,4 +1,7 @@
 /* eslint-disable no-undef */
+var view = null;
+var $cardList = document.querySelector('.card-list');
+var $searchIcon = document.querySelector('.search-icon');
 var $deletingDeckBox;
 var $deleteModal = document.querySelector('.delete-modal-container');
 var $tabButton = document.querySelector('#tab-view');
@@ -88,7 +91,6 @@ window.addEventListener('click', function (event) {
     switchView('cards');
   }
   if (event.target.parentElement.dataset.link === 'add-deck') {
-    Deck.getActiveDeck().$deckBox.id = '';
     var deck = new Deck('New Deck');
     deck.id = data.nextDeckID;
     data.nextDeckID++;
@@ -245,18 +247,51 @@ function onSelect(event) {
   flickity.selectedElement.style.transform = zoomed;
 }
 
+window.onresize = function () {
+  if (window.innerWidth < 900) {
+    if (view === 'decks') {
+      switchView('decks');
+    }
+    return;
+  }
+  $deckBigText.classList.remove('hidden');
+  $searchIcon.classList.remove('hidden');
+  $deckBigText.classList.remove('hidden');
+  $deckImageBox.classList.remove('hidden');
+  $cardList.style.height = null;
+};
+
 function switchView(string) {
+  view = string;
+  $searchBoxes[0].classList.remove('hidden');
+  $searchIcon.classList.remove('hidden');
+  $deckBigText.classList.remove('hidden');
+  $deckImageBox.classList.remove('hidden');
+  $cardList.style.height = 'unset';
   if (string === 'decks') {
+    if (window.innerWidth > 900) {
+      return;
+    }
     $itemContainer.classList.add('hidden');
     $deckView.classList.remove('hidden');
     $deckView.innerHTML = '';
     for (var i = 0; i < data.decks.length; i++) {
       $deckView.appendChild(data.decks[i].renderDeckBoxMobile());
     }
+    $deckBigText.classList.add('hidden');
+    $deckImageBox.classList.add('hidden');
+    $searchBoxes[0].classList.add('hidden');
+    $searchIcon.classList.add('hidden');
+    $cardList.style.height = '92vh';
+    return;
   }
   if (string === 'cards') {
+    if (window.innerWidth > 900) {
+      return;
+    }
     $itemContainer.classList.remove('hidden');
     $deckView.classList.add('hidden');
+    return;
   }
   if (string === 'delete') {
     $deleteModal.parentElement.classList.remove('hidden');
