@@ -31,9 +31,11 @@ $deleteModal.addEventListener('click', function (event) {
   if (event.target.dataset.control === 'delete') {
     $deleteModal.parentElement.classList.add('hidden');
     Deck.deleteActive();
+    switchView('decks');
   }
   if (event.target.dataset.control === 'cancel') {
     $deleteModal.parentElement.classList.add('hidden');
+    switchView('decks');
   }
 });
 
@@ -93,6 +95,7 @@ window.addEventListener('click', function (event) {
     deck.render();
     deck.renderDeckBox();
     $deckContainerDesktop.appendChild(deck.$deckBox);
+    switchView('decks');
   }
   $tabView.classList.remove('slide');
   tabViewOpen = false;

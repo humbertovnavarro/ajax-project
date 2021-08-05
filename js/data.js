@@ -238,7 +238,6 @@ class Deck {
       }
       if (event.target.dataset.control === 'delete') {
         switchView('delete');
-        return;
       }
       for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
         $deckContainerDesktop.children[i].id = '';
@@ -304,10 +303,27 @@ class Deck {
     }
   }
 
+  static delete(id) {
+    if (data.deckIndex === 0) {
+      return;
+    }
+    for (var i = 0; i < data.decks.length; i++) {
+      if (data.decks[i].id === id) {
+        data.decks.splice(i, 1);
+        data.deckIDS.splice(data.deck.indexOf(id), 1);
+        data.deckIndex--;
+        data.activeDeck = data.decks[deckIndex].id;
+        data.activeDeck = data.getActiveDeck();
+        return;
+      }
+    }
+  }
+
   static deleteActive() {
+    $stackContainer.innerHTML = '';
+    $itemContainer.innerHTML = '';
     if (data.decks.length === 1) {
       $deckContainerDesktop.innerHTML = '';
-      $stackContainer.innerHTML = '';
       var deck = data.decks[0];
       localStorage.removeItem(deck.id);
       localStorage.removeItem(deck.id + '_image');
@@ -324,9 +340,11 @@ class Deck {
       deck.$deckBox.remove();
       localStorage.removeItem(deck.id);
       localStorage.removeItem(deck.id + '_image');
-      data.deckIDS.splice(data.deckIDS.indexOf(data.deckIndex), 1);
+      data.deckIDS.splice(data.deckIDS.indexOf(deck.id), 1);
       data.decks.splice(data.decks.indexOf(deck), 1);
       Deck.setActiveDeck(data.deckIDS[0]);
+      Deck.getActiveDeck().render();
+      Deck.getActiveDeck().$deckBox.id = 'active';
     }
   }
 }
@@ -359,7 +377,7 @@ function LoadDecks() {
   }
   if (data.decks.length === 0) {
     var deck = new Deck('New Deck');
-    data.deckIDS = [];
+    data.deckIDS = [0];
     data.decks = [];
     data.deckIndex = 0;
     data.activeDeck = 0;

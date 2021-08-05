@@ -470,6 +470,28 @@ a {
     display: inherit;
   }
 
+  .delete-modal-container {
+    margin-top: 30vh;
+    padding-top: 2rem;
+    width: 300px;
+    height: 30vh;
+  }
+
+  .delete-modal-container button {
+    width: 5rem;
+  }
+
+  #active {
+    border: none;
+  }
+
+  .delete-icon {
+    display: inherit;
+    position: absolute;
+    color: red;
+    left: 22rem;
+  }
+
   .load-modal {
     left: 40%;
   }
