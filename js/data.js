@@ -395,7 +395,7 @@ function LoadDecks() {
   var ids = JSON.parse(idsJSON);
   data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
   data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
-  if (ids !== null) {
+  if (ids !== null && ids !== undefined) {
     for (var i = 0; i < ids.length; i++) {
       var deckJSON = this.localStorage.getItem(ids[i]);
       var deckString = JSON.parse(deckJSON);
