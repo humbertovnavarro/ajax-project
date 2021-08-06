@@ -207,9 +207,9 @@ class Deck {
   }
 
   serialize() {
-    var string = this.name + ';';
+    var string = this.name + '|';
     for (var key in this.cards) {
-      string += key + ';' + this.cards[key].count + ';';
+      string += key + '|' + this.cards[key].count + '|';
     }
     return string.replace(' ', '%20');
   }
@@ -293,7 +293,7 @@ class Deck {
       return;
     }
     var temp = string.replace('%20', ' ');
-    var cardData = temp.split(';');
+    var cardData = temp.split('|');
     cardData.pop();
     var deck = new Deck();
     deck.name = cardData[0];
@@ -310,9 +310,9 @@ class Deck {
     return data.decks[data.deckIndex];
   }
 
-  static import(string) {
-    var deck = Deck.loadFromString(string);
-    Deck.stashDeck(deck);
+  static import() {
+    var deck = Deck.loadFromString(window.location.search.substring(1));
+    return deck;
   }
 
   static stashDeck(deck) {
@@ -395,7 +395,7 @@ function LoadDecks() {
   var ids = JSON.parse(idsJSON);
   data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
   data.nextDeckID = JSON.parse(this.localStorage.getItem('nextdeckid'));
-  if (ids !== null) {
+  if (ids !== null && ids !== undefined) {
     for (var i = 0; i < ids.length; i++) {
       var deckJSON = this.localStorage.getItem(ids[i]);
       var deckString = JSON.parse(deckJSON);
@@ -423,6 +423,16 @@ function LoadDecks() {
   for (i = 0; i < data.decks.length; i++) {
     data.decks[i].renderDeckBox();
     $deckContainerDesktop.appendChild(data.decks[i].$deckBox);
+  }
+  if (window.location.search.indexOf('|') !== -1) {
+    var importedDeck = Deck.import();
+    importedDeck.id = data.nextDeckID;
+    data.deckIDS.push(data.nextDeckID);
+    data.decks.push(importedDeck);
+    data.nextDeckID++;
+    importedDeck.render();
+    importedDeck.render();
+    data.activeDeck = importedDeck.id;
   }
 }
 
