@@ -215,7 +215,7 @@ class Deck {
   }
 
   renderDeckBoxMobile() {
-    var $deckBox = document.createElement('div');
+    var $deckBox = document.createElement('button');
     $deckBox.setAttribute('data-id', this.id);
     $deckBox.className = 'deck';
     var $artCrop = document.createElement('div');
@@ -227,11 +227,11 @@ class Deck {
     var $title = document.createElement('h2');
     $deckBox.appendChild($title);
     $title.textContent = this.name;
-    var $trashCan = document.createElement('span');
+    var $trashCan = document.createElement('button');
     $trashCan.className = 'material-icons delete-icon';
     $trashCan.setAttribute('data-control', 'delete');
-    $trashCan.textContent = 'delete_icon';
     $deckBox.appendChild($trashCan);
+    $trashCan.textContent = 'delete_icon';
     $deckBox.addEventListener('click', function (event) {
       if (event.target.dataset.control === 'delete') {
         $deletingDeckBox = this;
@@ -261,7 +261,7 @@ class Deck {
     var $title = document.createElement('h2');
     $deckBox.appendChild($title);
     $title.textContent = this.name;
-    var $trashCan = document.createElement('span');
+    var $trashCan = document.createElement('button');
     $trashCan.className = 'material-icons delete-icon';
     $trashCan.setAttribute('data-control', 'delete');
     $trashCan.textContent = 'delete_icon';
@@ -351,11 +351,12 @@ class Deck {
   }
 
   static deleteActive() {
+    var deck;
     $stackContainer.innerHTML = '';
     $itemContainer.innerHTML = '';
     if (data.decks.length === 1) {
       $deckContainerDesktop.innerHTML = '';
-      var deck = data.decks[0];
+      deck = data.decks[0];
       localStorage.removeItem(deck.id);
       localStorage.removeItem(deck.id + '_image');
       deck.name = 'New Deck';
@@ -367,7 +368,7 @@ class Deck {
       $deckContainerDesktop.appendChild(deck.$deckBox);
       deck.$deckBox.id = 'active';
     } else {
-      var deck = Deck.getActiveDeck();
+      deck = Deck.getActiveDeck();
       deck.$deckBox.remove();
       localStorage.removeItem(deck.id);
       localStorage.removeItem(deck.id + '_image');
@@ -391,6 +392,7 @@ xhr.onload = function () {
 xhr.send();
 
 function LoadDecks() {
+  var deck;
   var idsJSON = this.localStorage.getItem('deckids');
   var ids = JSON.parse(idsJSON);
   data.activeDeck = JSON.parse(this.localStorage.getItem('activedeck'));
@@ -399,14 +401,14 @@ function LoadDecks() {
     for (var i = 0; i < ids.length; i++) {
       var deckJSON = this.localStorage.getItem(ids[i]);
       var deckString = JSON.parse(deckJSON);
-      var deck = Deck.loadFromString(deckString);
+      deck = Deck.loadFromString(deckString);
       deck.id = ids[i];
       data.decks.push(deck);
     }
     data.deckIDS = ids;
   }
   if (data.decks.length === 0) {
-    var deck = new Deck('New Deck');
+    deck = new Deck('New Deck');
     data.deckIDS = [0];
     data.decks = [];
     data.deckIndex = 0;

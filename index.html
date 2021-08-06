@@ -20,26 +20,28 @@
   <div class="tab-view">
     <div class="tab-container">
       <div class="row flex-end padding-h-10px">
-        <span class="material-icons">list</span>
+        <button>
+          <span class="material-icons">list</span>
+        </button>
       </div>
-      <div class="tab-content mobile" data-link="decks">
+      <button>
+      </button>
+      <button class="tab-content mobile" data-link="decks">
         <h1>Decks</h1>
         <span class="material-icons">layers</span>
-      </div>
-      <div class="tab-content mobile" data-link="cards">
+      </button>
+      <button class="tab-content mobile" data-link="cards">
         <h1>Cards</h1>
         <span class="material-icons">layers</span>
-      </div>
-      <a href="https://scryfall.com/docs/syntax" target="_blank">
-      <div class="tab-content">
+      </button>
+      <a class="tab-content" href="https://scryfall.com/docs/syntax" target="_blank">
         <h1>Help</h1>
         <span class="material-icons">help</span>
-      </div>
       </a>
-      <div class="tab-content" data-link="add-deck">
+      <button class="tab-content" data-link="add-deck">
         <h1>Add Deck</h1>
         <span class="material-icons">add</span>
-      </div>
+      </button>
     </div>
   </div>
   <div class="modal search-modal hidden">
@@ -52,7 +54,7 @@
     </div>
   </div>
   <div class="modal info-modal hidden">
-    <img src="https://http.cat/204">
+    <img src="images/loader.svg">
   </div>
   <div class="modal qr-modal hidden">
     <p>Scan to export</p>
@@ -74,7 +76,9 @@
       <div class="column-half">
         <div class="row">
           <div class="padding-h-10px column-eigth line-right">
-            <span id="tab-view" class="material-icons">list</span>
+            <button>
+              <span id="tab-view" class="material-icons">list</span>
+            </button>
           </div>
           <div class="padding-h-10px column-three-fourths">
             <h1>MAJAX</h1>
@@ -84,9 +88,11 @@
       <div class="column-half">
         <div class="row">
           <div class="padding-h-10px column-eigth">
-            <span class="material-icons qr-button">
-              qr_code
-            </span>
+            <button>
+              <span class="material-icons qr-button">
+                qr_code
+              </span>
+            </button>
           </div>
         </div>
       </div>
