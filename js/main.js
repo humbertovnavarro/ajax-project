@@ -170,7 +170,7 @@ function toggleSearch(toggle) {
 
 function generateCard(card) {
   var $img = document.createElement('img');
-  $img.className = 'MajaxCard';
+  $img.className = 'majax-card';
   $img.src = card.image_uris.large;
   $img.setAttribute('data-id', card.id);
   if (card.layout === 'split') {

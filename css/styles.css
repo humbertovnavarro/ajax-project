@@ -26,6 +26,7 @@ a {
 }
 
 .material-icons {
+  color: white;
   font-size: 40px;
 }
 
@@ -36,6 +37,8 @@ a {
 }
 
 .tab-content {
+  font-size: 1rem;
+  color: white;
   margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
@@ -289,10 +292,6 @@ a {
   font-size: 1.25rem;
 }
 
-.text-center {
-  text-align: center;
-}
-
 .deck-image-box {
   backdrop-filter: brightness(20%);
   box-shadow: 1px 4px 4px 0 black;
@@ -347,6 +346,7 @@ a {
 }
 
 .delete-modal-container button {
+  background-color: #eeebdd;
   border: none;
   font-family: 'Average', sans-serif;
   font-size: large;
@@ -423,7 +423,7 @@ a {
   overflow-x: clip !important;
 }
 
-.MajaxCard {
+.majax-card {
   box-shadow: 0 0 0 4px 4px black;
   transition: transform 0.2s;
   height: 256px;
@@ -431,7 +431,7 @@ a {
   border-radius: 11px;
 }
 
-.MajaxCard:active {
+.majax-card:active {
   border: 1px solid white;
 }
 
@@ -522,7 +522,7 @@ a {
     display: inherit;
     position: absolute;
     color: red;
-    left: 20rem;
+    left: 18rem;
   }
 
   .load-modal {

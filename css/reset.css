@@ -24,6 +24,11 @@ p {
   padding: 0;
 }
 
+button {
+  border: none;
+  background-color: transparent;
+}
+
 button:active {
   transform: translateY(1px);
 }
