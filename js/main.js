@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 var $qrButton = document.querySelector('.qr-button');
 var $qrModal = document.querySelector('.qr-modal');
+var $qrImage = document.querySelector('.qr-image');
 var view = null;
 var $cardList = document.querySelector('.card-list');
 var $searchIcon = document.querySelector('.search-icon');
@@ -306,6 +307,10 @@ function switchView(string) {
     $deleteModal.parentElement.classList.remove('hidden');
   }
   if (string === 'qr') {
+    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=http://127.0.0.1:5500/?';
+    url += Deck.getActiveDeck().serialize();
+    $qrImage.src = url;
+    console.log('http://127.0.0.1:5500/?' + Deck.getActiveDeck().serialize());
     $qrModal.classList.remove('hidden');
   }
 }
