@@ -2,6 +2,7 @@
 var $qrButton = document.querySelector('.qr-button');
 var $qrModal = document.querySelector('.qr-modal');
 var $qrImage = document.querySelector('.qr-image');
+var $noResultsModal = document.querySelector('.no-results-modal');
 var view = null;
 var $cardList = document.querySelector('.card-list');
 var $searchIcon = document.querySelector('.search-icon');
@@ -199,6 +200,8 @@ function search() {
     if (xhr.response.data === undefined || xhr.response.data.length === 0 || xhr.response.data === null) {
       $loadModal.classList.add('hidden');
       $searchModal.classList.add('hidden');
+      switchView('noresults');
+      getCurrentSearchBox().focus();
       return;
     }
     results = xhr.response;
@@ -272,7 +275,13 @@ window.onresize = function () {
 };
 
 function switchView(string) {
-  view = string;
+  if (string === 'noresults') {
+    $noResultsModal.classList.remove('hidden');
+    setTimeout(function () {
+      $noResultsModal.classList.add('hidden');
+    }, 1000);
+    return;
+  }
   $searchBoxes[0].classList.remove('hidden');
   $searchIcon.classList.remove('hidden');
   $deckBigText.classList.remove('hidden');
