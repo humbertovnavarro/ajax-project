@@ -307,7 +307,7 @@ function switchView(string) {
     $deleteModal.parentElement.classList.remove('hidden');
   }
   if (string === 'qr') {
-    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=http://humbertovnavarro.github.io/ajax-project/?';
+    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=https://humbertovnavarro.github.io/ajax-project/?';
     url += Deck.getActiveDeck().serialize();
     $qrImage.src = url;
     $qrModal.classList.remove('hidden');
