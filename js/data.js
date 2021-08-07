@@ -4,7 +4,7 @@
 /* exported Card */
 var data = {
   symbols: null,
-  deckIDS: [],
+  deckIDS: [0],
   decks: [],
   deckIndex: 0,
   activeDeck: 1,
