@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* exported Card */
 class Card {
   static getSymbol(string) {
@@ -135,5 +136,13 @@ class Card {
         }
       }
     }
+  }
+
+  getPurchaseURL() {
+    if (!this.xhr.response) {
+      return;
+    }
+    const query = encodeURIComponent(this.xhr.response.name);
+    return `https://www.tcgplayer.com/search/magic/product?Language=English&productLineName=magic&q=${query}&view=grid`;
   }
 }
