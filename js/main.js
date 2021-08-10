@@ -1,33 +1,31 @@
 /* eslint-disable no-undef */
-var $qrButton = document.querySelector('.qr-button');
-var $qrModal = document.querySelector('.qr-modal');
-var $qrImage = document.querySelector('.qr-image');
-var $noResultsModal = document.querySelector('.no-results-modal');
-var view = null;
-var $cardList = document.querySelector('.card-list');
-var $searchIcon = document.querySelector('.search-icon');
-var $deletingDeckBox;
-var $deleteModal = document.querySelector('.delete-modal-container');
-var $tabButton = document.querySelector('#tab-view');
-var tabViewOpen = false;
-var $deckContainerDesktop = document.querySelector('.deck-container');
-var $deckListDesktop = document.querySelector('.deck-list-desktop');
-var $tabView = document.querySelector('.tab-view');
-var $searchBoxes = document.querySelectorAll('.search-box');
-var $searchModal = document.querySelector('.search-modal');
-var $search = document.querySelector('.carousel');
-var $deckBigText = document.querySelector('.deck-big-text');
+const $qrButton = document.querySelector('.qr-button');
+const $qrModal = document.querySelector('.qr-modal');
+const $qrImage = document.querySelector('.qr-image');
+const $noResultsModal = document.querySelector('.no-results-modal');
+const view = null;
+const $cardList = document.querySelector('.card-list');
+const $searchIcon = document.querySelector('.search-icon');
+let $deletingDeckBox;
+const $deleteModal = document.querySelector('.delete-modal-container');
+const $tabButton = document.querySelector('#tab-view');
+let tabViewOpen = false;
+const $deckContainerDesktop = document.querySelector('.deck-container');
+const $deckListDesktop = document.querySelector('.deck-list-desktop');
+const $tabView = document.querySelector('.tab-view');
+const $searchBoxes = document.querySelectorAll('.search-box');
+const $searchModal = document.querySelector('.search-modal');
+const $search = document.querySelector('.carousel');
+const $deckBigText = document.querySelector('.deck-big-text');
+const $deckImageBox = document.querySelector('.deck-image-box');
+const $itemContainer = document.querySelector('.card-view');
+const $deckView = document.querySelector('.deck-view');
 // eslint-disable-next-line no-unused-vars
-var $deckImageBox = document.querySelector('.deck-image-box');
-// eslint-disable-next-line no-unused-vars
-var $itemContainer = document.querySelector('.card-view');
-var $deckView = document.querySelector('.deck-view');
-// eslint-disable-next-line no-unused-vars
-var $stackContainer = document.querySelector('.majax-stack-container');
-var $infoModal = document.querySelector('.info-modal');
-var $loadModal = document.querySelector('.load-modal');
-var flickity;
-var options = {
+const $stackContainer = document.querySelector('.majax-stack-container');
+const $infoModal = document.querySelector('.info-modal');
+const $loadModal = document.querySelector('.load-modal');
+let flickity;
+const options = {
   imagesLoaded: true,
   percentPosition: true,
   wrapAround: true,
@@ -56,9 +54,9 @@ $deleteModal.addEventListener('click', function (event) {
 });
 
 $deckListDesktop.addEventListener('click', function (event) {
-  var index;
-  var i;
-  var $deckBox;
+  let index;
+  let i;
+  let $deckBox;
   if (event.target.dataset.control === 'right') {
     index = data.deckIndex;
     if (data.deckIndex + 1 > data.decks.length - 1) {
@@ -102,7 +100,7 @@ window.addEventListener('click', function (event) {
     switchView('cards');
   }
   if (event.target.parentElement.dataset.link === 'add-deck') {
-    var deck = new Deck('New Deck');
+    const deck = new Deck('New Deck');
     deck.id = data.nextDeckID;
     data.nextDeckID++;
     data.deckIDS.push(deck.id);
@@ -134,7 +132,7 @@ $searchModal.addEventListener('wheel', function (event) {
   }
 });
 
-for (var i = 0; i < $searchBoxes.length; i++) {
+for (let i = 0; i < $searchBoxes.length; i++) {
   $searchBoxes[i].addEventListener('keyup', function (event) {
     if (event.key !== 'Enter') {
       toggleSearch(false);
@@ -151,10 +149,10 @@ $searchModal.addEventListener('mousedown', function (event) {
 });
 
 $deckBigText.addEventListener('blur', function () {
-  var $h1 = Deck.getActiveDeck().$deckBox.children[1];
+  const $h1 = Deck.getActiveDeck().$deckBox.children[1];
   $h1.textContent = $deckBigText.value;
   Deck.getActiveDeck().name = $deckBigText.value;
-  for (var i = 0; i < $deckContainerDesktop.children.length; i++) {
+  for (let i = 0; i < $deckContainerDesktop.children.length; i++) {
     if ($deckContainerDesktop.children[i].dataset.id === Deck.getActiveDeck().id) {
       $deckContainerDesktop.children[i].innerHTML = Deck.getActiveDeck().name;
     }
@@ -170,7 +168,7 @@ function toggleSearch(toggle) {
 }
 
 function generateCard(card) {
-  var $img = document.createElement('img');
+  const $img = document.createElement('img');
   $img.className = 'majax-card';
   $img.src = card.image_uris.large;
   $img.setAttribute('data-id', card.id);
@@ -184,15 +182,15 @@ function generateCard(card) {
 function search() {
   toggleSearch(true);
   resetFlickity();
-  var $searchBox = getCurrentSearchBox();
-  var query = $searchBox.value;
+  const $searchBox = getCurrentSearchBox();
+  const query = $searchBox.value;
   if (!query) {
     $loadModal.classList.add('hidden');
     $searchModal.classList.add('hidden');
     return;
   }
   $loadModal.classList.remove('hidden');
-  var xhr = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   xhr.open('GET', 'https://api.scryfall.com/cards/search?order=cmc&q=' + query);
   getCurrentSearchBox().value = '';
   xhr.responseType = 'json';
@@ -205,9 +203,9 @@ function search() {
       return;
     }
     results = xhr.response;
-    for (var i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
+    for (let i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
       if (xhr.response.data[i].image_uris !== undefined) {
-        var cell = generateCard(this.response.data[i]);
+        const cell = generateCard(this.response.data[i]);
         cell.setAttribute('data-index', i);
         flickity.prepend(cell);
       }
@@ -243,12 +241,12 @@ function resetFlickity() {
 }
 
 function onSelect(event) {
-  var zoomed = 'scale(2) translateY(-20px)';
+  let zoomed = 'scale(2) translateY(-20px)';
   if (window.innerWidth < 900) {
     zoomed = 'scale(1.25) translateY(-20px)';
   }
-  var normal = 'scale(1) translateY(0px)';
-  for (var i = 0; i < flickity.cells.length; i++) {
+  const normal = 'scale(1) translateY(0px)';
+  for (let i = 0; i < flickity.cells.length; i++) {
     flickity.cells[i].element.style.transform = normal;
     flickity.cells[i].element.style.zIndex = ('1');
   }
@@ -294,7 +292,7 @@ function switchView(string) {
     $itemContainer.classList.add('hidden');
     $deckView.classList.remove('hidden');
     $deckView.innerHTML = '';
-    for (var i = 0; i < data.decks.length; i++) {
+    for (let i = 0; i < data.decks.length; i++) {
       $deckView.appendChild(data.decks[i].renderDeckBoxMobile());
     }
     $deckBigText.classList.add('hidden');
@@ -316,7 +314,7 @@ function switchView(string) {
     $deleteModal.parentElement.classList.remove('hidden');
   }
   if (string === 'qr') {
-    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=https://humbertovnavarro.github.io/majax/?';
+    let url = 'https://api.qrserver.com/v1/create-qr-code/?data=https://humbertovnavarro.github.io/majax/?';
     url += Deck.getActiveDeck().serialize();
     $qrImage.src = url;
     $qrModal.classList.remove('hidden');
