@@ -218,9 +218,7 @@ function search() {
         flickity.prepend(cell);
       }
     }
-    setTimeout(0, () => {
-      flickity.positionCells();
-    });
+    flickity.positionCells();
     $loadModal.classList.add('hidden');
   };
   xhr.send();
