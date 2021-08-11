@@ -327,7 +327,6 @@ function switchView(string) {
     url += Deck.getActiveDeck().serialize();
     $qrImage.src = 'images/loader.svg';
     setTimeout(() => { $qrImage.src = url; }, 0);
-    $qrImage.src = url;
     $qrModal.classList.remove('hidden');
   }
 }
