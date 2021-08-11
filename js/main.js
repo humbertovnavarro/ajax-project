@@ -172,9 +172,8 @@ function generateCard(card) {
   const $img = document.createElement('img');
   $img.className = 'majax-card';
   $img.src = 'images/loader.svg';
-  setTimeout(() => { $img.src = card.image_uris.small; }, 0);
-  setTimeout(() => { $img.src = card.image_uris.normal; }, 0);
-  setTimeout(() => { $img.src = card.image_uris.large; }, 0);
+  const candidateStrings = `${card.image_uris.small},${card.image_uris.normal} 720w,${card.image_uris.large} 1440w`;
+  $img.srcset = candidateStrings;
   $img.setAttribute('data-id', card.id);
   if (card.layout === 'split') {
     $img.style.transform = 'rotate(90deg)';

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* exported Card */
 class Card {
   static getSymbol(string) {
@@ -80,7 +81,7 @@ class Card {
   }
 
   onload() {
-    this.fullCard = this.xhr.response.image_uris.large;
+    this.fullCard = `${this.xhr.response.image_uris.normal} 1080w,${this.xhr.response.image_uris.large} 1440w`;
     this.name.textContent = this.xhr.response.name;
     this.image.src = this.xhr.response.image_uris.art_crop;
     const manaSymbols = [];
