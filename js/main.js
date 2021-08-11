@@ -325,6 +325,8 @@ function switchView(string) {
   if (string === 'qr') {
     let url = 'https://api.qrserver.com/v1/create-qr-code/?data=https://humbertovnavarro.github.io/majax/?';
     url += Deck.getActiveDeck().serialize();
+    $qrImage.src = 'images/loader.svg';
+    setTimeout(() => { $qrImage.src = url; }, 0);
     $qrImage.src = url;
     $qrModal.classList.remove('hidden');
   }
