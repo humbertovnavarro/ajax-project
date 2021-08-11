@@ -214,7 +214,9 @@ function search() {
       if (xhr.response.data[i].image_uris !== undefined) {
         const cell = generateCard(this.response.data[i]);
         cell.setAttribute('data-index', i);
-        flickity.prepend(cell);
+        setTimeout(() => {
+          flickity.prepend(cell);
+        }, 0);
       }
     }
     flickity.positionCells();
