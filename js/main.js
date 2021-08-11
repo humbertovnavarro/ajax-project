@@ -171,7 +171,10 @@ function toggleSearch(toggle) {
 function generateCard(card) {
   const $img = document.createElement('img');
   $img.className = 'majax-card';
-  $img.src = card.image_uris.large;
+  $img.src = 'images/loader.svg';
+  setTimeout(() => { $img.src = card.image_uris.small; }, 0);
+  setTimeout(() => { $img.src = card.image_uris.normal; }, 0);
+  setTimeout(() => { $img.src = card.image_uris.large; }, 0);
   $img.setAttribute('data-id', card.id);
   if (card.layout === 'split') {
     $img.style.transform = 'rotate(90deg)';
