@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const mobile = mobileCheck();
 const $qrButton = document.querySelector('.qr-button');
 const $qrModal = document.querySelector('.qr-modal');
 const $qrImage = document.querySelector('.qr-image');
@@ -203,7 +204,11 @@ function search() {
       return;
     }
     results = xhr.response;
-    for (let i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
+    let maxResults = 175;
+    if (mobile) {
+      maxResults = 50;
+    }
+    for (let i = Math.min(xhr.response.data.length - 1, maxResults); i >= 0; i--) {
       if (xhr.response.data[i].image_uris !== undefined) {
         const cell = generateCard(this.response.data[i]);
         cell.setAttribute('data-index', i);
