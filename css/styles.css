@@ -543,6 +543,10 @@ a {
     z-index: 2;
   }
 
+  .info-modal {
+    z-index: 3;
+  }
+
   .info-modal img {
     border-radius: 15px;
     left: 15%;
