@@ -1,10 +1,5 @@
-.row,
-.flex {
+.row {
   display: flex;
-}
-
-.column-half {
-  width: calc(100% / 2);
 }
 
 .column-half-mobile {
@@ -39,33 +34,8 @@
   align-items: center;
 }
 
-.flex-end {
-  justify-content: flex-end;
-}
-
-.flex-start {
-  justify-self: flex-start;
-}
-
-.flex-vertical-center {
-  justify-self: center;
-}
-
-.padding-h-10px {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.margin-10px {
-  margin: 10px;
-}
-
 .margin-right-10px {
   margin-right: 10px;
-}
-
-.margin-5px {
-  margin: 5px;
 }
 
 .margin-top-3rem {

@@ -16,16 +16,6 @@ h1 {
   font-family: 'Philosopher', sans-serif;
 }
 
-button {
-  cursor: pointer;
-}
-
-a {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: inherit;
-}
-
 #active {
   border: 1px solid yellow;
 }
