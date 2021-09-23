@@ -23,5 +23,7 @@ see [Scryfall Search Documentation](https://scryfall.com/advanced)
 
 https://user-images.githubusercontent.com/16251746/134561031-a20e2a03-b20d-4b5f-bd65-958af541b023.mp4
 
+## Creating and Deleting Decks
 
+https://user-images.githubusercontent.com/16251746/134567867-df4752bc-b358-469d-a9e3-8f3980040c8e.mp4
 
