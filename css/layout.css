@@ -4,7 +4,11 @@
 }
 
 .column-half {
-  width: 100% / 2;
+  width: calc(100% / 2);
+}
+
+.column-half-mobile {
+  width: calc(100% / 2);
 }
 
 .column-full {
@@ -21,6 +25,10 @@
 
 .justify-center {
   justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
 }
 
 .space-between {

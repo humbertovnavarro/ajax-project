@@ -320,14 +320,15 @@ a {
 }
 
 .delete-icon {
-  display: none;
-  position: absolute;
+  margin: 1rem;
+  width: 1rem;
   color: red;
-  left: 12rem;
 }
 
-#active .delete-icon {
-  display: block;
+.desktop .delete-icon {
+  position: relative;
+  left: 4rem;
+  margin: 0;
 }
 
 .delete-modal-container {
@@ -516,13 +517,6 @@ a {
 
   #active {
     border: none;
-  }
-
-  .delete-icon {
-    display: inherit;
-    position: absolute;
-    color: red;
-    left: 18rem;
   }
 
   .load-modal {
