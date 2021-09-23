@@ -1,5 +1,5 @@
 # Majax, A Deck Builder for Magic Players
-I wanted to build this because of the lack of good UX experiences in magic deck builders. Notably, the lack of mobile friendly deck builders.
+
 [Live Link](https://humbertovnavarro.github.io/majax)
 # Technologies
  * JavaScript
