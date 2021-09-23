@@ -66,20 +66,40 @@ class Deck {
     const $deckBox = document.createElement('button');
     $deckBox.setAttribute('data-id', this.id);
     $deckBox.className = 'deck';
+    const $row = document.createElement('div');
+    $row.className = 'row';
+    const $col1 = document.createElement('div');
+    $deckBox.appendChild($col1);
+    $col1.className = 'column-half-mobile';
+    const $col1row = document.createElement('div');
+    $col1.appendChild($col1row);
+    $col1row.className = 'row vertical-center';
+
     const $artCrop = document.createElement('div');
     $artCrop.className = 'art-crop';
     const $image = document.createElement('img');
     $image.src = this.image;
     $artCrop.appendChild($image);
-    $deckBox.appendChild($artCrop);
+
     const $title = document.createElement('h2');
-    $deckBox.appendChild($title);
     $title.textContent = this.name;
+
+    $col1row.appendChild($artCrop);
+    $col1row.appendChild($title);
+
+    const $col2 = document.createElement('div');
+    $deckBox.appendChild($col2);
+    $col2.className = 'column-half-mobile';
+    const $col2row = document.createElement('row');
+    $col2.appendChild($col2row);
+    $col2row.className = 'row vertical-center flex-end';
+
     const $trashCan = document.createElement('button');
     $trashCan.className = 'material-icons delete-icon';
     $trashCan.setAttribute('data-control', 'delete');
-    $deckBox.appendChild($trashCan);
     $trashCan.textContent = 'delete_icon';
+    $col2row.appendChild($trashCan);
+
     $deckBox.addEventListener('click', function (event) {
       if (event.target.dataset.control === 'delete') {
         $deletingDeckBox = this;
@@ -97,7 +117,7 @@ class Deck {
   }
 
   renderDeckBox() {
-    const $deckBox = document.createElement('div');
+    const $deckBox = document.createElement('button');
     $deckBox.setAttribute('data-id', this.id);
     $deckBox.className = 'deck';
     const $artCrop = document.createElement('div');
@@ -133,7 +153,10 @@ class Deck {
   }
 
   static getQR() {
-    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + window.location.hostname + '/?' + this.getActiveDeck().serialize();
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
+    window.location.hostname +
+    '/?' +
+    this.getActiveDeck().serialize();
   }
 
   static loadFromString(string) {

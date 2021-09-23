@@ -14,7 +14,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-EHQQHHL8C4');
   </script>
   <title>Majax</title>
@@ -38,8 +37,10 @@
           <span class="material-icons">list</span>
         </button>
       </div>
-      <button>
-      </button>
+      <a class="tab-content" href="https://scryfall.com/docs/syntax" target="_blank">
+        <h1>Help</h1>
+        <span class="material-icons">help</span>
+      </a>
       <button class="tab-content mobile" data-link="decks">
         <h1>Decks</h1>
         <span class="material-icons">layers</span>
@@ -48,10 +49,6 @@
         <h1>Cards</h1>
         <span class="material-icons">layers</span>
       </button>
-      <a class="tab-content" href="https://scryfall.com/docs/syntax" target="_blank">
-        <h1>Help</h1>
-        <span class="material-icons">help</span>
-      </a>
       <button class="tab-content" data-link="add-deck">
         <h1>Add Deck</h1>
         <span class="material-icons">add</span>
@@ -94,7 +91,7 @@
   </div>
   <header>
     <div class="row space-between vertical-center">
-      <div class="column-half">
+      <div>
         <div class="row">
           <div class="padding-h-10px line-right">
             <button id="tab-view" class="material-icons">
@@ -106,7 +103,7 @@
           </div>
         </div>
       </div>
-      <div class="column-half">
+      <div>
         <div class="row">
           <div class="padding-h-10px">
             <button class="material-icons qr-button">
@@ -159,7 +156,7 @@
         <div class="row">
           <div class="card-list-desktop">
             <div class="search-box-container padding-h-10px">
-              <input class="search-box" type="search" name="search" placeholder="Search">
+              <input class="search-box" type="search" name="search" placeholder="Search for cards">
               <span class="material-icons search-icon">search</span>
             </div>
             <div class="majax-stack-container">

@@ -16,7 +16,12 @@ h1 {
   font-family: 'Philosopher', sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 a {
+  cursor: pointer;
   color: inherit;
   text-decoration: inherit;
 }
@@ -275,6 +280,7 @@ a {
 }
 
 .deck {
+  font-family: 'Average', sans-serif;
   position: relative;
   margin: 1px;
   align-items: center;
@@ -286,6 +292,7 @@ a {
   background-color: #1b1717;
   color: #eeebdd;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .deck h2 {
@@ -320,14 +327,15 @@ a {
 }
 
 .delete-icon {
-  display: none;
-  position: absolute;
+  margin: 1rem;
+  width: 1rem;
   color: red;
-  left: 12rem;
 }
 
-#active .delete-icon {
-  display: block;
+.desktop .delete-icon {
+  position: relative;
+  left: 3.6rem;
+  margin: 0;
 }
 
 .delete-modal-container {
@@ -516,13 +524,6 @@ a {
 
   #active {
     border: none;
-  }
-
-  .delete-icon {
-    display: inherit;
-    position: absolute;
-    color: red;
-    left: 18rem;
   }
 
   .load-modal {
