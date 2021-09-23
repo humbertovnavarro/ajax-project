@@ -13,6 +13,7 @@
  * A Search filter box to search through cards without knowing how to use scryfall search syntax
  * Commander / EDH support
  * Backend to share and explore user created decks
+# Getting Started
 ## Export and import decks by creating and scanning qr codes.
 https://user-images.githubusercontent.com/16251746/134561045-9c65e857-0b13-434e-9b28-77d704874014.mp4
 
