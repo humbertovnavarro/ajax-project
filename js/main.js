@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const mobile = mobileCheck();
 const $qrButton = document.querySelector('.qr-button');
 const $qrModal = document.querySelector('.qr-modal');
 const $qrImage = document.querySelector('.qr-image');
@@ -170,7 +171,9 @@ function toggleSearch(toggle) {
 function generateCard(card) {
   const $img = document.createElement('img');
   $img.className = 'majax-card';
-  $img.src = card.image_uris.large;
+  $img.src = 'images/loader.svg';
+  const candidateStrings = `${card.image_uris.small},${card.image_uris.normal} 720w,${card.image_uris.large} 1440w`;
+  $img.srcset = candidateStrings;
   $img.setAttribute('data-id', card.id);
   if (card.layout === 'split') {
     $img.style.transform = 'rotate(90deg)';
@@ -203,13 +206,20 @@ function search() {
       return;
     }
     results = xhr.response;
-    for (let i = Math.min(xhr.response.data.length - 1, 175); i >= 0; i--) {
+    let maxResults = 175;
+    if (mobile) {
+      maxResults = 50;
+    }
+    for (let i = Math.min(xhr.response.data.length - 1, maxResults); i >= 0; i--) {
       if (xhr.response.data[i].image_uris !== undefined) {
         const cell = generateCard(this.response.data[i]);
         cell.setAttribute('data-index', i);
-        flickity.prepend(cell);
+        setTimeout(() => {
+          flickity.prepend(cell);
+        }, 0);
       }
     }
+    flickity.positionCells();
     $loadModal.classList.add('hidden');
   };
   xhr.send();
@@ -316,7 +326,8 @@ function switchView(string) {
   if (string === 'qr') {
     let url = 'https://api.qrserver.com/v1/create-qr-code/?data=https://humbertovnavarro.github.io/majax/?';
     url += Deck.getActiveDeck().serialize();
-    $qrImage.src = url;
+    $qrImage.src = 'images/loader.svg';
+    setTimeout(() => { $qrImage.src = url; }, 0);
     $qrModal.classList.remove('hidden');
   }
 }

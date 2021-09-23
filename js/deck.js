@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* exported Deck */
 class Deck {
   constructor(name = null) {

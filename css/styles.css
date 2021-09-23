@@ -297,7 +297,7 @@ a {
   box-shadow: 1px 4px 4px 0 black;
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.418), rgba(0, 0, 0, 0.418)),
-    url("https://http.cat/204");
+    url("../images/loader.svg");
   background-position: center;
   background-size: cover;
   border-radius: 11px;
@@ -535,6 +535,10 @@ a {
   .is-selected {
     transform: scale(1.25);
     z-index: 2;
+  }
+
+  .info-modal {
+    z-index: 3;
   }
 
   .info-modal img {

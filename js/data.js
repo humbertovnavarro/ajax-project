@@ -9,7 +9,6 @@ let data = {
   nextDeckID: 1,
   mobileView: 'decks'
 };
-
 const xhr = new XMLHttpRequest();
 xhr.open('GET', 'https://api.scryfall.com/symbology');
 xhr.responseType = 'json';
@@ -34,7 +33,9 @@ function LoadDecks() {
       deck.id = ids[i];
       data.decks.push(deck);
     }
-    data.deckIDS = ids;
+    if (Array.isArray(ids) && ids.length > 0) {
+      data.deckIDS = ids;
+    }
   }
   if (data.decks.length === 0) {
     deck = new Deck('New Deck');
