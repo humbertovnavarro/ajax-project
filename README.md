@@ -1,5 +1,4 @@
 # Majax, A Deck Builder for Magic Players
-
 [Live Link](https://humbertovnavarro.github.io/majax)
 # Technologies
  * JavaScript
