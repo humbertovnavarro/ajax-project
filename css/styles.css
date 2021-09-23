@@ -16,7 +16,12 @@ h1 {
   font-family: 'Philosopher', sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 a {
+  cursor: pointer;
   color: inherit;
   text-decoration: inherit;
 }
@@ -275,6 +280,7 @@ a {
 }
 
 .deck {
+  font-family: 'Average', sans-serif;
   position: relative;
   margin: 1px;
   align-items: center;
@@ -286,6 +292,7 @@ a {
   background-color: #1b1717;
   color: #eeebdd;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .deck h2 {
@@ -327,7 +334,7 @@ a {
 
 .desktop .delete-icon {
   position: relative;
-  left: 4rem;
+  left: 3.6rem;
   margin: 0;
 }
 

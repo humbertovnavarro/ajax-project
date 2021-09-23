@@ -73,7 +73,7 @@ class Deck {
     $col1.className = 'column-half-mobile';
     const $col1row = document.createElement('div');
     $col1.appendChild($col1row);
-    $col1row.className = 'row item-center';
+    $col1row.className = 'row vertical-center';
 
     const $artCrop = document.createElement('div');
     $artCrop.className = 'art-crop';
@@ -117,7 +117,7 @@ class Deck {
   }
 
   renderDeckBox() {
-    const $deckBox = document.createElement('div');
+    const $deckBox = document.createElement('button');
     $deckBox.setAttribute('data-id', this.id);
     $deckBox.className = 'deck';
     const $artCrop = document.createElement('div');
@@ -153,10 +153,10 @@ class Deck {
   }
 
   static getQR() {
-    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='
-    + window.location.hostname
-    + '/?'
-    + this.getActiveDeck().serialize();
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' +
+    window.location.hostname +
+    '/?' +
+    this.getActiveDeck().serialize();
   }
 
   static loadFromString(string) {
