@@ -24,9 +24,14 @@ p {
   padding: 0;
 }
 
+a {
+  cursor: pointer;
+}
+
 button {
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 button:active {
